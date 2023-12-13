@@ -9,6 +9,7 @@
   "author": "Petr Kolouch, Ondrej Zobal, Vladimir Hucovic",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "mysql2": "^3.6.5"
   }
 }

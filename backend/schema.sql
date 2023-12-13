@@ -15,13 +15,13 @@ drop table if exists MultipleChoiceAnswer;
 drop table if exists MultipleChoiceQuestion;
 
 create table RegisteredUser (
-  id integer primary key,
+  id integer primary key auto_increment auto_increment,
   username varchar(255), 
   password varchar(255)
 );
 
 create table Article (
-  id integer primary key,
+  id integer primary key auto_increment auto_increment,
   heading varchar(255),
   content text,
   source_link varchar(255),
@@ -29,7 +29,7 @@ create table Article (
 );
 
 create table CustomTranslation (
-  id integer primary key,
+  id integer primary key auto_increment,
   author_id integer,
   article_id integer,
   start_char_index integer,
@@ -41,27 +41,27 @@ alter table CustomTranslation add constraint fk_translation_article_id foreign k
 alter table CustomTranslation add constraint fk_translation_author_id foreign key (author_id) references RegisteredUser(id) on delete cascade;
 
 create table DifficultyRating (
+  id integer primary key auto_increment,
   article_id integer,
   user_id integer,
-  rating integer,
-  primary key (article_id, user_id)
+  rating integer
 );
 
 alter table DifficultyRating add constraint fk_difficulty_article_id foreign key (article_id) references Article(id) on delete cascade;
 alter table DifficultyRating add constraint fk_difficulty_user_id foreign key (user_id) references RegisteredUser(id) on delete cascade;
 
 create table TranslationRating (
+  id integer primary key auto_increment,
   translation_id integer,
   user_id integer,
-  rating integer,
-  primary key(translation_id, user_id)
+  rating integer
 );
 
 alter table TranslationRating add constraint fk_translation_rating_translation_id foreign key (translation_id) references CustomTranslation(id) on delete cascade;
 alter table TranslationRating add constraint fk_translation_rating_user_id foreign key (user_id) references RegisteredUser(id) on delete cascade;
 
 create table FlashcardDeck (
-  id integer primary key,
+  id integer primary key auto_increment,
   author_id integer,
   name varchar(255),
   description text
@@ -70,7 +70,7 @@ create table FlashcardDeck (
 alter table FlashcardDeck add constraint fk_deck_author_id foreign key (author_id) references RegisteredUser(id) on delete cascade;
 
 create table Flashcard (
-  id integer primary key,
+  id integer primary key auto_increment,
   deck_id integer,
   front text,
   back text,
@@ -80,7 +80,7 @@ create table Flashcard (
 alter table Flashcard add constraint fk_card_deck_id foreign key (deck_id) references FlashcardDeck(id) on delete cascade;
 
 create table LearningGroup (
-  id integer primary key,
+  id integer primary key auto_increment,
   name varchar(255),
   description text,
   lector_id integer
@@ -89,7 +89,7 @@ create table LearningGroup (
 alter table LearningGroup add constraint fk_group_lector_id foreign key (lector_id) references RegisteredUser(id) on delete cascade;
 
 create table LearningGroupMember (
-  id integer,
+  id integer primary key auto_increment,
   group_id integer,
   user_id integer
 );
@@ -99,7 +99,7 @@ alter table LearningGroupMember add constraint fk_group_member_user_id foreign k
 
 
 create table Test (
-  id integer primary key,
+  id integer primary key auto_increment,
   group_id integer,
   name varchar(255),
   difficulty integer
@@ -108,7 +108,7 @@ create table Test (
 alter table Test add constraint fk_test_group_id foreign key (group_id) references LearningGroup(id) on delete cascade;
 
 create table FulltextQuestion (
-  id integer primary key,
+  id integer primary key auto_increment,
   test_id integer,
   question text,
   answer text
@@ -117,7 +117,7 @@ create table FulltextQuestion (
 alter table FulltextQuestion add constraint fk_ftquestion_test_id foreign key (test_id) references Test(id) on delete cascade;
 
 create table FulltextAnswer (
-  id integer primary key,
+  id integer primary key auto_increment,
   question_id integer,
   user_id integer,
   answer text
@@ -127,24 +127,24 @@ alter table FulltextAnswer add constraint fk_ftanswer_question_id foreign key (q
 alter table FulltextAnswer add constraint fk_ftanswer_user_id foreign key (user_id) references RegisteredUser(id) on delete cascade;
 
 create table Choice (
-  id integer primary key,
+  id integer primary key auto_increment,
   question_id integer,
   content text
 );
 
 
 create table MultipleChoiceQuestion (
-  id integer primary key,
+  id integer primary key auto_increment,
   test_id integer,
   question text,
   answer integer
 );
 
 create table MultipleChoiceAnswer (
-  id integer primary key,
+  id integer primary key auto_increment,
   question_id integer,
   user_id integer,
-  answer_id integer
+  choice_id integer
 );
 
 alter table MultipleChoiceQuestion add constraint fk_mcquestion_test_id foreign key (test_id) references Test(id) on delete cascade;
@@ -152,7 +152,8 @@ alter table MultipleChoiceQuestion add constraint fk_mcquestion_test_id foreign 
 
 alter table MultipleChoiceAnswer add constraint fk_mcanswer_question_id foreign key (question_id) references MultipleChoiceQuestion(id) on delete cascade;
 alter table MultipleChoiceAnswer add constraint fk_mcanswer_user_id foreign key (user_id) references RegisteredUser(id) on delete cascade;
-alter table MultipleChoiceAnswer add constraint fk_mcanswer_answer_id foreign key (answer_id) references Choice(id) on delete cascade;
+alter table MultipleChoiceAnswer add constraint fk_mcanswer_choice_id foreign key (choice_id) references Choice(id) on delete cascade;
+
 
 
 
@@ -185,5 +186,4 @@ ALTER TABLE MultipleChoiceQuestion DROP FOREIGN KEY fk_mcquestion_test_id;
 
 ALTER TABLE MultipleChoiceAnswer DROP FOREIGN KEY fk_mcanswer_question_id;
 ALTER TABLE MultipleChoiceAnswer DROP FOREIGN KEY fk_mcanswer_user_id;
-ALTER TABLE MultipleChoiceAnswer DROP FOREIGN KEY fk_mcanswer_answer_id;
-
+ALTER TABLE MultipleChoiceAnswer DROP FOREIGN KEY fk_mcanswer_choice_id;
