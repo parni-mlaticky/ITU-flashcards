@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
       });
 
       res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
-      res.status(200, "User logged in");
+      res.status(200, "User logged in", { token: token, user: user });
     } else {
       const error_message = "Invalid username or password";
       return res.status(401, error_message);
@@ -96,7 +96,7 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
       expiresIn: "1h",
     });
     res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
-    res.status(201, "User created");
+    res.status(201, "User created", { token: token, user: newUser });
   } catch (err) {
     console.log(err);
     const message = "Error registering user";
