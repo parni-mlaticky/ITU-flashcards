@@ -3,18 +3,14 @@ const router = express.Router();
 const constants = require("../constants");
 const FlashcardDeck = require("../objects/FlashcardDeck");
 const Flashcard = require("../objects/Flashcard");
+const wrapped = require("./errorWrapper");
 
 // Returns a list of all user's decks
-router.get("/", async (req, res) => {
-  try {
+router.get("/", wrapped(async (req, res) => {
+    console.log("Getting decks");
     const decks = await FlashcardDeck.getAllByAuthor(req.user.id);
-    res.status(200).json(decks);
-  } catch (err) {
-    console.log(err);
-    const message = "Error getting decks";
-    res.status(500, message);
-  }
-});
+    return decks;
+}, "Error getting decks"));
 
 // Create a new deck
 router.post("/", async (req, res) => {
@@ -125,3 +121,9 @@ router.delete("/:deckId/cards/:cardId", async (req, res) => {
 });
 
 module.exports = router;
+
+// async function main() {
+//   fetch("localhost:3000/decks/1/cards/1");
+// }
+
+// main()
