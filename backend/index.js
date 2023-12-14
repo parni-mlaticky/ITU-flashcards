@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const routes = require("./routes");
 const methodOverride = require("method-override");
+const authenticateToken = require("../middleware/auth");
 
 require("dotenv").config();
 
@@ -12,6 +13,7 @@ app.use("/public", express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(methodOverride("_method"));
+app.use(authenticateToken);
 
 app.use("/", routes);
 
