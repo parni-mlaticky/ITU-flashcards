@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const constants = require("../constants");
-const Flash
 
 router.get("/", async (req, res) => {
   try {
