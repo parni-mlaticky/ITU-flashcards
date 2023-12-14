@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+import axios from "axios";
 import {
   VStack,
   Box,
@@ -12,6 +14,33 @@ import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 
 const RegisterScreen = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3000/register", {
+        username,
+        password,
+      });
+
+      if (response.status == 201) {
+        console.log("Registered!");
+        navigation.navigate("Decks", response.data);
+      } else {
+        console.log("Error registering!", response.data);
+      }
+    } catch (error) {
+      console.log("Error registering!", error);
+    }
+  };
+
   return (
     <Center flex={1} px={3} bg="coolGray.50">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -39,20 +68,34 @@ const RegisterScreen = ({ navigation }) => {
 
         <VStack space={3} mt="5">
           <FormControl.Label mb={-2}>Username</FormControl.Label>
-          <CustomInput placeholder="Username" />
+          <CustomInput
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+          />
 
           <FormControl.Label mb={-2}>Password</FormControl.Label>
-          <CustomInput placeholder="Password" type="password" />
+          <CustomInput
+            placeholder="Password"
+            type="password"
+            value={password}
+            onChangeText={setPassword}
+          />
 
           <FormControl.Label mb={-2}>Confirm Password</FormControl.Label>
-          <CustomInput placeholder="Confirm Password" type="password" />
+          <CustomInput
+            placeholder="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
           <CustomButton
             title="Register"
             mt="2"
             w="100%"
             h="40px"
             colorScheme="indigo"
-            onPress={() => console.log("Registered!")}
+            onPress={handleRegister}
           />
 
           <Button
