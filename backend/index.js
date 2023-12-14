@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const routes = require("./routes");
 const methodOverride = require("method-override");
-const authenticateToken = require("../middleware/auth");
+const authenticateToken = require("./middlewares/auth");
 
 require("dotenv").config();
 

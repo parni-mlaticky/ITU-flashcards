@@ -111,11 +111,13 @@ router.get("/:articleId/translation/:authorId", async (req, res) => {
 
 // Create a new translation of a particular article
 router.post("/:articleId/translation", async (req, res) => {
+  const id = null;
+  const article_id = req.params.articleId;
   try {
     const translation = await CustomTranslation({
-      null,
-      req.user.id,
-      req.params.articleId,
+      id,
+      author_id: req.user.id,
+      article_id,
       ...req.body
     });
     res.status(200).json(translation);
@@ -130,12 +132,9 @@ router.post("/:articleId/translation", async (req, res) => {
 router.put("/:articleId/translation", async (req, res) => {
   try {
     // Querying to geth id of existing article
-    const article = CustomTranslation.getByAuthorId()
+    const translation = CustomTranslation.getByAuthorId();
     let updated = await ArticleModel.updateTranslation({
-      article.id,
-      req.user.id,
-      req.params.articleId,
-      ...req.body,
+
     });
     updated = updated.save();
     res.status(200).json(updated);
@@ -152,10 +151,7 @@ router.delete("/:articleId/translation", async (req, res) => {
     // Querying to geth id of existing article
     const article = CustomTranslation.getByAuthorId()
     const translation = await CustomTranslation({
-      article.id,
-      req.user.id,
-      req.params.articleId,
-      ...req.params.id,
+
     });
     translation.delete();
     res.status(200, "Translation deleted successfully");

@@ -1,7 +1,7 @@
 const ORMBase = require("./ORMBase");
 const GroupMessage = require("./GroupMessage");
 const LearningGroupMember = require("./LearningGroupMember");
-const RegisteredUser = require("./RegistredUser");
+const RegisteredUser = require("./RegisteredUser");
 const Test = require("./Test");
 
 class LearningGroup extends ORMBase {
