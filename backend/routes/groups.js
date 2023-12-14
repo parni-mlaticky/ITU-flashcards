@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const constants = require("../constants");
-const Flash
+const groupModel = require("../objects/LearningGroup");
 
+// Get all learning groups
 router.get("/", async (req, res) => {
   try {
     const groups = await groupModel.getAll();
@@ -14,9 +15,12 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Create new group 
 router.post("/", async (req, res) => {
   try {
-    const group = await groupModel.create(req.body);
+    const { name, description, lectorId } = req.body;
+    const group = new groupModel(null, name, description, lectorId);
+    await group.save();
     res.status(200).json(group);
   } catch (err) {
     console.log(err);
@@ -25,6 +29,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Get detail of group
 router.get("/:id", async (req, res) => {
   try {
     const group = await groupModel.getById(req.params.id);
@@ -36,9 +41,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Update group name or description
 router.put("/:id", async (req, res) => {
   try {
-    const group = await groupModel.update(req.params.id, req.body);
+    const group = await groupModel.getById(req.params.id);
+    group.name = req.body.name;
+    group.description = req.body.description;
+    await group.save();
     res.status(200).json(group);
   } catch (err) {
     console.log(err);
@@ -47,9 +56,11 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// Delete group
 router.delete("/:id", async (req, res) => {
   try {
-    const group = await groupModel.delete(req.params.id);
+    const group = await groupModel.getById(req.params.id);
+    await group.delete();
     res.status(200, "Group deleted successfully");
   } catch (err) {
     console.log(err);
@@ -58,6 +69,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// Chat for all members of the group
 router.get("/:id/chat", async (req, res) => {
   try {
     const chat = await groupModel.getChat(req.params.id);
@@ -69,9 +81,11 @@ router.get("/:id/chat", async (req, res) => {
   }
 });
 
+// Post a message to group chat
 router.post("/:id/chat", async (req, res) => {
   try {
-    const chat = await groupModel.createChat(req.params.id, req.body);
+    const group = await groupModel.getById(req.params.id);
+    group.postMessage(req.body.message);
     res.status(200).json(chat);
   } catch (err) {
     console.log(err);

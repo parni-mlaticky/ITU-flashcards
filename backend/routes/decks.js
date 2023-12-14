@@ -20,7 +20,8 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { author_id, name, description } = req.body;
-    let deck = FlashcardDeck({ null, author_id, name, description });
+    let id = null;
+    let deck = FlashcardDeck({ id, author_id, name, description });
     deck = await deck.save();
     res.status(200).json(deck);
   } catch (err) {
@@ -45,7 +46,8 @@ router.get("/:deckId", async (req, res) => {
 // Update particular deck by id
 router.put("/:deckId", async (req, res) => {
   try {
-    let deck = FlashcardDeck({ req.params.deckId, ...req.body });
+    const id = req.params.deckId;
+    const deck = FlashcardDeck({ id, ...req.body });
     deck = await deck.save();
     res.status(200).json(deck);
   } catch (err) {
@@ -69,8 +71,6 @@ router.delete("/:deckId", async (req, res) => {
 });
 
 
-/* Cards */
-
 // Get a list of all cards
 router.get("/:deckId/cards", async (req, res) => {
   try {
@@ -86,8 +86,8 @@ router.get("/:deckId/cards", async (req, res) => {
 // Create a card
 router.post("/:deckId/cards", async (req, res) => {
   try {
-    req.body.deck_id = req.params.deckId;
-    let card = Flashcard({ null, ...req.body });
+    const id = null;
+    const card = Flashcard({ id, ...req.body });
     card = await card.save();
     res.status(200).json(card);
   } catch (err) {
@@ -100,8 +100,8 @@ router.post("/:deckId/cards", async (req, res) => {
 // Edit a card
 router.put("/:deckId/cards/:cardId", async (req, res) => {
   try {
-    req.body.deck_id = req.params.deckId;
-    let card = Flashcard({ req.params.cardId, ...req.body });
+    const id = req.params.cardId;
+    const card = Flashcard({ id, ...req.body });
     card = card.save();
     res.status(200).json(card);
   } catch (err) {
@@ -111,10 +111,11 @@ router.put("/:deckId/cards/:cardId", async (req, res) => {
   }
 });
 
+// Delete a card
 router.delete("/:deckId/cards/:cardId", async (req, res) => {
   try {
-    const deck = await Flashcard.getById(req.params.cardId);
-    deck.delete();
+    const card = await Flashcard.getById(req.params.cardId);
+    card.delete();
     res.status(200, "Card deleted successfully");
   } catch (err) {
     console.log(err);
