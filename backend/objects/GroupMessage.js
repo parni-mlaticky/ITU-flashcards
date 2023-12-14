@@ -1,11 +1,11 @@
 const ORMBase = require("./ORMBase");
 
-class Test extends ORMBase {
-  constructor({ id, group_id, name, difficulty }) {
+class GroupMessage extends ORMBase {
+  constructor({ id, group_id, user_id, text}) {
     super(id);
     this.group_id = group_id;
-    this.name = name;
-    this.difficulty = difficulty;
+    this.user_id = user_id;
+    this.text = text;
   }
 
   static async getAllByGroupId(group_id) {
@@ -15,5 +15,4 @@ class Test extends ORMBase {
   }
 }
 
-
-module.exports = Test;
+module.exports = GroupMessage;

@@ -1,19 +1,3 @@
-drop table if exists RegisteredUser;
-drop table if exists Article;
-drop table if exists CustomTranslation;
-drop table if exists DifficultyRating;
-drop table if exists TranslationRating;
-drop table if exists FlashcardDeck;
-drop table if exists Flashcard;
-drop table if exists LearningGroup;
-drop table if exists LearningGroupMember;
-drop table if exists Test;
-drop table if exists FulltextQuestion;
-drop table if exists FulltextAnswer;
-drop table if exists Choice;
-drop table if exists MultipleChoiceAnswer;
-drop table if exists MultipleChoiceQuestion;
-
 create table RegisteredUser (
   id integer primary key auto_increment auto_increment,
   username varchar(255), 
@@ -140,6 +124,8 @@ create table MultipleChoiceQuestion (
   answer integer
 );
 
+alter table MultipleChoiceQuestion add constraint fk_mcquestion_test_id foreign key (test_id) references Test(id) on delete cascade;
+
 create table MultipleChoiceAnswer (
   id integer primary key auto_increment,
   question_id integer,
@@ -147,16 +133,24 @@ create table MultipleChoiceAnswer (
   choice_id integer
 );
 
-alter table MultipleChoiceQuestion add constraint fk_mcquestion_test_id foreign key (test_id) references Test(id) on delete cascade;
-
-
 alter table MultipleChoiceAnswer add constraint fk_mcanswer_question_id foreign key (question_id) references MultipleChoiceQuestion(id) on delete cascade;
 alter table MultipleChoiceAnswer add constraint fk_mcanswer_user_id foreign key (user_id) references RegisteredUser(id) on delete cascade;
 alter table MultipleChoiceAnswer add constraint fk_mcanswer_choice_id foreign key (choice_id) references Choice(id) on delete cascade;
 
 
+create table GroupMessage (
+  id integer primary key auto_increment,
+  group_id integer,
+  user_id integer,
+  content text
+);
+
+alter table GroupMessage add constraint fk_group_message_group_id foreign key (group_id) references LearningGroup(id) on delete cascade;
+alter table GroupMessage add constraint fk_group_message_user_id foreign key (user_id) references RegisteredUser(id) on delete cascade;
 
 
+
+-- DELETING
 ALTER TABLE CustomTranslation DROP FOREIGN KEY fk_translation_article_id;
 ALTER TABLE CustomTranslation DROP FOREIGN KEY fk_translation_author_id;
 
@@ -187,3 +181,24 @@ ALTER TABLE MultipleChoiceQuestion DROP FOREIGN KEY fk_mcquestion_test_id;
 ALTER TABLE MultipleChoiceAnswer DROP FOREIGN KEY fk_mcanswer_question_id;
 ALTER TABLE MultipleChoiceAnswer DROP FOREIGN KEY fk_mcanswer_user_id;
 ALTER TABLE MultipleChoiceAnswer DROP FOREIGN KEY fk_mcanswer_choice_id;
+
+ALTER TABLE GroupMessage DROP FOREIGN KEY fk_group_message_group_id;
+ALTER TABLE GroupMessage DROP FOREIGN KEY fk_group_message_user_id;
+
+drop table if exists RegisteredUser;
+drop table if exists Article;
+drop table if exists CustomTranslation;
+drop table if exists DifficultyRating;
+drop table if exists TranslationRating;
+drop table if exists FlashcardDeck;
+drop table if exists Flashcard;
+drop table if exists LearningGroup;
+drop table if exists LearningGroupMember;
+drop table if exists Test;
+drop table if exists FulltextQuestion;
+drop table if exists FulltextAnswer;
+drop table if exists Choice;
+drop table if exists MultipleChoiceAnswer;
+drop table if exists MultipleChoiceQuestion;
+drop table if exists GroupMessage;
+
