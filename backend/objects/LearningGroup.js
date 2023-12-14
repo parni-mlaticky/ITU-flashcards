@@ -1,7 +1,7 @@
 const ORMBase = require("./ORMBase");
 
 class LearningGroup extends ORMBase {
-  constructor(id, name, description, lector_id) {
+  constructor({ id, name, description, lector_id }) {
     super(id);
     this.name = name;
     this.description = description;

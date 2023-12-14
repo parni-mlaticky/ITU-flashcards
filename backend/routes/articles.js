@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const constants = require("../constants");
-const articleModel = require("../models");
+const Article = require("../objects/Article");
+const CustomTranslation = require("../objects/CustomTranslation");
 
+// Get all articles
 router.get("/", async (req, res) => {
   try {
-    const articles = await articleModel.getAll();
+    const articles = await Article.getAll();
     res.status(200).json(articles);
   } catch (err) {
     console.log(err);
@@ -14,9 +16,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+// Get a particular article
+router.get("/:articleId", async (req, res) => {
   try {
-    const article = await articleModel.getById(req.params.id);
+    const article = await Article.getById(req.params.articleId);
     res.status(200).json(article);
   } catch (err) {
     console.log(err);
@@ -25,10 +28,24 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id/:userId/translation", async (req, res) => {
+// Get a particular article's total dificoulty raiting
+router.get("/:articleId", async (req, res) => {
   try {
-    const translation = await articleModel.getTranslation(
-      req.params.id,
+    const article = await Article.getById(req.params.articleId);
+    res.status(200).json(article);
+  } catch (err) {
+    console.log(err);
+    const message = "Error getting article";
+    res.status(500, message);
+  }
+});
+
+
+// Get a particular articles translation made by a particular user
+router.get("/:articleId/translation/:authorId", async (req, res) => {
+  try {
+    const translation = await CustomTranslation.getByAuthorId(
+      req.params.articleId,
       req.params.userId,
     );
     res.status(200).json(translation);
@@ -39,12 +56,15 @@ router.get("/:id/:userId/translation", async (req, res) => {
   }
 });
 
-router.post("/:id/translation", async (req, res) => {
+// Create a new translation of a particular article
+router.post("/:articleId/translation", async (req, res) => {
   try {
-    const translation = await articleModel.createTranslation(
-      req.params.id,
-      req.user,
-    );
+    const translation = await CustomTranslation({
+      null,
+      req.user.id,
+      req.params.articleId,
+      ...req.body
+    });
     res.status(200).json(translation);
   } catch (err) {
     console.log(err);
@@ -53,15 +73,19 @@ router.post("/:id/translation", async (req, res) => {
   }
 });
 
-router.put("/:id/translation", async (req, res) => {
+// Edit this user's transaltion of a particular article
+router.put("/:articleId/translation", async (req, res) => {
   try {
-    const { newTranslation } = req.body;
-    const translation = await articleModel.updateTranslation(
+    // Querying to geth id of existing article
+    const article = CustomTranslation.getByAuthorId()
+    let updated = await ArticleModel.updateTranslation({
+      article.id,
       req.user.id,
-      req.params.translationId,
-      newTranslation,
-    );
-    res.status(200).json(translation);
+      req.params.articleId,
+      ...req.body,
+    });
+    updated = updated.save();
+    res.status(200).json(updated);
   } catch (err) {
     console.log(err);
     const message = "Error updating translation";
@@ -69,12 +93,18 @@ router.put("/:id/translation", async (req, res) => {
   }
 });
 
-router.delete("/:id/translation", async (req, res) => {
+// Edit this user's translation of a particular article
+router.delete("/:articleId/translation", async (req, res) => {
   try {
-    const translation = await articleModel.deleteTranslation(
-      req.params.id,
+    // Querying to geth id of existing article
+    const article = CustomTranslation.getByAuthorId()
+    const translation = await CustomTranslation({
+      article.id,
       req.user.id,
-    );
+      req.params.articleId,
+      ...req.params.id,
+    });
+    translation.delete();
     res.status(200, "Translation deleted successfully");
   } catch (err) {
     console.log(err);

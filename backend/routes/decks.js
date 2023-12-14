@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const constants = require("../constants");
-const { deckModel, cardModel } = require("../models");
+const FlashcardDeck = require("../objects/FlashcardDeck");
+const Flashcard = require("../objects/Flashcard");
 
+// Returns a list of all user's decks
 router.get("/", async (req, res) => {
   try {
-    const decks = await deckModel.getAll();
+    const decks = await FlashcardDeck.getAllByAuthor(req.user.id);
     res.status(200).json(decks);
   } catch (err) {
     console.log(err);
@@ -14,9 +16,12 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Create a new deck
 router.post("/", async (req, res) => {
   try {
-    const deck = await deckModel.create(req.body);
+    const { author_id, name, description } = req.body;
+    let deck = FlashcardDeck({ null, author_id, name, description });
+    deck = await deck.save();
     res.status(200).json(deck);
   } catch (err) {
     console.log(err);
@@ -25,9 +30,10 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+// Get particular deck by id
+router.get("/:deckId", async (req, res) => {
   try {
-    const deck = await deckModel.getById(req.params.id);
+    const deck = await FlashcardDeck.getById(req.params.deckId);
     res.status(200).json(deck);
   } catch (err) {
     console.log(err);
@@ -36,9 +42,11 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+// Update particular deck by id
+router.put("/:deckId", async (req, res) => {
   try {
-    const deck = await deckModel.update(req.params.id, req.body);
+    let deck = FlashcardDeck({ req.params.deckId, ...req.body });
+    deck = await deck.save();
     res.status(200).json(deck);
   } catch (err) {
     console.log(err);
@@ -47,9 +55,11 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+// Delete a particular deck by id
+router.delete("/:deckId", async (req, res) => {
   try {
-    const deck = await deckModel.delete(req.params.id);
+    const deck = await FlashcardDeck.getById(req.params.id);
+    deck.delete();
     res.status(200, "Deck deleted successfully");
   } catch (err) {
     console.log(err);
@@ -58,11 +68,13 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
 /* Cards */
 
-router.get("/:id/cards", async (req, res) => {
+// Get a list of all cards
+router.get("/:deckId/cards", async (req, res) => {
   try {
-    const cards = await cardModel.getAll(req.params.id);
+    const cards = await Flashcard.getAllInDeck(req.params.id);
     res.status(200).json(cards);
   } catch (err) {
     console.log(err);
@@ -71,9 +83,12 @@ router.get("/:id/cards", async (req, res) => {
   }
 });
 
-router.post("/:id/cards", async (req, res) => {
+// Create a card
+router.post("/:deckId/cards", async (req, res) => {
   try {
-    const card = await cardModel.create(req.params.id, req.body);
+    req.body.deck_id = req.params.deckId;
+    let card = Flashcard({ null, ...req.body });
+    card = await card.save();
     res.status(200).json(card);
   } catch (err) {
     console.log(err);
@@ -82,9 +97,12 @@ router.post("/:id/cards", async (req, res) => {
   }
 });
 
-router.put("/:id/cards/:cardId", async (req, res) => {
+// Edit a card
+router.put("/:deckId/cards/:cardId", async (req, res) => {
   try {
-    const card = await cardModel.update(req.params.cardId, req.body);
+    req.body.deck_id = req.params.deckId;
+    let card = Flashcard({ req.params.cardId, ...req.body });
+    card = card.save();
     res.status(200).json(card);
   } catch (err) {
     console.log(err);
@@ -93,9 +111,10 @@ router.put("/:id/cards/:cardId", async (req, res) => {
   }
 });
 
-router.delete("/:id/cards/:cardId", async (req, res) => {
+router.delete("/:deckId/cards/:cardId", async (req, res) => {
   try {
-    const card = await cardModel.delete(req.params.cardId);
+    const deck = await Flashcard.getById(req.params.cardId);
+    deck.delete();
     res.status(200, "Card deleted successfully");
   } catch (err) {
     console.log(err);

@@ -2,7 +2,7 @@ const db = require("../database");
 const ORMBase = require("./ORMBase");
 
 class RegisteredUser extends ORMBase {
-  constructor(id, username, password) {
+  constructor({ id, username, password }) {
     super(id);
     this.username = username;
     this.password = password;

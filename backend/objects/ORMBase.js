@@ -64,6 +64,43 @@ class ORMBase {
     const query = `DELETE FROM ${this.constructor.name} WHERE id = ?`;
     await db.query(query, [this.id]);
   }
+
+  static async getById(id) {
+    const query = `SELECT * FROM ${this.constructor.name} WHERE id = ?`;
+    const [rows] = await db.query(query, [id]);
+
+    if (rows.length === 0) {
+        return null;
+    }
+
+    const row = rows[0];
+    const instance = new this(row);
+
+    return instance;
+  }
+
+
+  // Carefull not all tables have name!
+  static async getByName(name) {
+    const query = `SELECT * FROM ${this.constructor.name} WHERE name = ?`;
+    const [rows] = await db.query(query, [name]);
+
+    if (rows.length === 0) {
+        return null;
+    }
+
+    const row = rows[0];
+    const instance = new this(row);
+
+    return instance;
+  }
+
+  static async getAll() {
+    const query = `SELECT * FROM ${this.constructor.name}`;
+    const [rows] = await db.query(query);
+    const objects = rows.map((entry) => new this(entry));
+    return objects;
+  }
 }
 
 module.exports = ORMBase;
