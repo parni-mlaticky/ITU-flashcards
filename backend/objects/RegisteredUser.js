@@ -14,7 +14,12 @@ class RegisteredUser extends ORMBase {
     if (rows.length == 0) {
       return null;
     }
-    return new RegisteredUser(rows[0].id, rows[0].username, rows[0].password);
+    const user = new RegisteredUser({
+      id: rows[0].id,
+      username: rows[0].username,
+      password: rows[0].password,
+    });
+    return user;
   };
 }
 

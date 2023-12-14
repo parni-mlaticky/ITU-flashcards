@@ -16,12 +16,12 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    if (!bcrypt.compareSync(password, user.password)) {
+    if (!(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: "Incorrect password" });
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true });
-    res.status(200).json({ message: "Logged in" });
+    return res.status(200).json({ message: "Logged in" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server error" });

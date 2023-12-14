@@ -41,11 +41,12 @@ router.get("/:articleId", async (req, res) => {
   }
 });
 
-
 // Get a prticular's article raiting average
 router.get("/:articleId/rating", async (req, res) => {
   try {
-    const raiting = await DifficultyRating.getAverageByArticleId(req.params.articleId);
+    const raiting = await DifficultyRating.getAverageByArticleId(
+      req.params.articleId,
+    );
     res.status(200).json(raiting);
   } catch (err) {
     const message = "Error getting article raiting";
@@ -56,8 +57,11 @@ router.get("/:articleId/rating", async (req, res) => {
 // Get a this user's article raiting average by a particular user
 router.get("/:articleId/rating/:userId", async (req, res) => {
   try {
-    const raiting = await DifficultyRating.getByArticleIdAndUserId(req.params.articleId, req.user.id);
-    res.status(200).json(raiting);
+    const rating = await DifficultyRating.getByArticleIdAndUserId(
+      req.params.articleId,
+      req.user.id,
+    );
+    res.status(200).json(rating);
   } catch (err) {
     const message = "Error getting article raiting";
     res.status(500, message);
@@ -67,12 +71,20 @@ router.get("/:articleId/rating/:userId", async (req, res) => {
 // create or update this users raiting
 router.post("/:articleId/rating", async (req, res) => {
   try {
-    let raiting = await DifficultyRating.getByArticleIdAndUserId(req.params.articleId, req.params.userId);
+    let raiting = await DifficultyRating.getByArticleIdAndUserId(
+      req.params.articleId,
+      req.params.userId,
+    );
     if (raiting) {
       raiting.raiting = req.body.raiting;
     } else {
       const id = null;
-      raiting = DifficultyRating({id, req.params.articleId, req.params.user_id, req.body.raiting });
+      raiting = DifficultyRating({
+        id,
+        article_id: req.params.articleId,
+        user_id: req.params.user_id,
+        rating: req.body.rating,
+      });
     }
     raiting.save();
     res.status(200).json(raiting);
@@ -85,7 +97,10 @@ router.post("/:articleId/rating", async (req, res) => {
 // Get a prticular's article raiting average
 router.delete("/:articleId/rating", async (req, res) => {
   try {
-    const raiting = await DifficultyRating.getByArticleIdAndUserId(req.params.articleId, req.user.id);
+    const raiting = await DifficultyRating.getByArticleIdAndUserId(
+      req.params.articleId,
+      req.user.id,
+    );
     raiting.delete();
     res.status(200).json("Difficoulty raiting deleted");
   } catch (err) {
@@ -118,7 +133,7 @@ router.post("/:articleId/translation", async (req, res) => {
       id,
       author_id: req.user.id,
       article_id,
-      ...req.body
+      ...req.body,
     });
     res.status(200).json(translation);
   } catch (err) {
@@ -133,9 +148,7 @@ router.put("/:articleId/translation", async (req, res) => {
   try {
     // Querying to geth id of existing article
     const translation = CustomTranslation.getByAuthorId();
-    let updated = await ArticleModel.updateTranslation({
-
-    });
+    let updated = await ArticleModel.updateTranslation({});
     updated = updated.save();
     res.status(200).json(updated);
   } catch (err) {
@@ -149,10 +162,8 @@ router.put("/:articleId/translation", async (req, res) => {
 router.delete("/:articleId/translation", async (req, res) => {
   try {
     // Querying to geth id of existing article
-    const article = CustomTranslation.getByAuthorId()
-    const translation = await CustomTranslation({
-
-    });
+    const article = CustomTranslation.getByAuthorId();
+    const translation = await CustomTranslation({});
     translation.delete();
     res.status(200, "Translation deleted successfully");
   } catch (err) {

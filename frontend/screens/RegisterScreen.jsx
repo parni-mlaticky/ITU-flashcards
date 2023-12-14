@@ -25,10 +25,13 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "http://192.168.115.92:3000/auth/register",
+        {
+          username,
+          password,
+        },
+      );
 
       if (response.status == 201) {
         console.log("Registered!");

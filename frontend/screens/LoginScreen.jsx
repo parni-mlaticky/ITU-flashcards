@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+import axios from "axios";
 import {
   VStack,
   Box,
@@ -12,6 +14,25 @@ import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 
 const LoginScreen = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://192.168.0.29:3000/auth/login", {
+        username,
+        password,
+      });
+      if (response.status == 200) {
+        console.log("Logged In!");
+        navigation.navigate("Decks", response.data);
+      } else {
+        console.log("Error logging in!", response.data);
+      }
+    } catch (error) {
+      console.log("Error logging in!", error);
+    }
+  };
   return (
     <Center flex={1} px={3} bg="coolGray.50">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -40,12 +61,21 @@ const LoginScreen = ({ navigation }) => {
         <VStack space={3} mt="5">
           <FormControl>
             <FormControl.Label mb={0}>Username</FormControl.Label>
-            <CustomInput placeholder="Enter your username" />
+            <CustomInput
+              placeholder="Enter your username"
+              value={username}
+              onChangeText={setUsername}
+            />
           </FormControl>
 
           <FormControl>
             <FormControl.Label mb={0}>Password</FormControl.Label>
-            <CustomInput placeholder="Enter your password" type="password" />
+            <CustomInput
+              placeholder="Enter your password"
+              type="password"
+              value={password}
+              onChangeText={setPassword}
+            />
           </FormControl>
 
           <CustomButton
@@ -54,7 +84,7 @@ const LoginScreen = ({ navigation }) => {
             w="100%"
             h="40px"
             colorScheme="indigo"
-            onPress={() => console.log("Logged In!")}
+            onPress={handleLogin}
           />
           <Button
             variant="ghost"
