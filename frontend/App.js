@@ -1,8 +1,8 @@
 import React from "react";
 import { NativeBaseProvider, extendTheme } from "native-base";
-import RegisterPage from "./screens/RegisterScreen";
-import LoginPage from "./screens/LoginScreen";
-import DecksPage from "./screens/DecksScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import LoginScreen from "./screens/LoginScreen";
+import DecksScreen from "./screens/DecksScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -20,9 +20,9 @@ export const theme = extendTheme({ config });
 function AppNavigator() {
   return (
     <stack.Navigator>
-      <stack.Screen name="Login" component={LoginPage} />
-      <stack.Screen name="Register" component={RegisterPage} />
-      <stack.Screen name="Decks" component={DecksPage} />
+      <stack.Screen name="Login" component={LoginScreen} />
+      <stack.Screen name="Register" component={RegisterScreen} />
+      <stack.Screen name="Decks" component={DecksScreen} />
     </stack.Navigator>
   );
 }
