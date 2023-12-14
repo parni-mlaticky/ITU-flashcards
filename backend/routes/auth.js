@@ -3,11 +3,11 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const RegisteredUser = require("../objects/RegisteredUser");
+const wrapped = require("./errorWrapper");
 
 module.exports = router;
 
-router.post("/login", async (req, res) => {
-  try {
+router.post("/login", wrapped(async (req, res) => {
     if (req.user) {
       return res.status(200).json({ message: "Already logged in" });
     }
@@ -22,13 +22,9 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true });
     return res.status(200).json({ message: "Logged in" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+}));
 
-router.post("/register", async (req, res) => {
+router.post("/register", wrapped(async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await RegisteredUser.getByUsername(username);
@@ -48,14 +44,14 @@ router.post("/register", async (req, res) => {
     console.log(err);
     res.status(500).json({ message: "Internal server error" });
   }
-});
+}));
 
-router.post("/logout", (req, res) => {
+router.post("/logout", wrapped((req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out" });
-});
+}));
 
-router.get("/logout", (req, res) => {
+router.get("/logout", wrapped((req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out" });
-});
+}));
