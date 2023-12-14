@@ -3,6 +3,7 @@ const router = express.Router();
 const constants = require("../constants");
 const Article = require("../objects/Article");
 const CustomTranslation = require("../objects/CustomTranslation");
+const DifficultyRating = require("../objects/DifficultyRating");
 
 // Get all articles
 router.get("/", async (req, res) => {
@@ -40,6 +41,58 @@ router.get("/:articleId", async (req, res) => {
   }
 });
 
+
+// Get a prticular's article raiting average
+router.get("/:articleId/rating", async (req, res) => {
+  try {
+    const raiting = await DifficultyRating.getAverageByArticleId(req.params.articleId);
+    res.status(200).json(raiting);
+  } catch (err) {
+    const message = "Error getting article raiting";
+    res.status(500, message);
+  }
+});
+
+// Get a this user's article raiting average by a particular user
+router.get("/:articleId/rating/:userId", async (req, res) => {
+  try {
+    const raiting = await DifficultyRating.getByArticleIdAndUserId(req.params.articleId, req.user.id);
+    res.status(200).json(raiting);
+  } catch (err) {
+    const message = "Error getting article raiting";
+    res.status(500, message);
+  }
+});
+
+// create or update this users raiting
+router.post("/:articleId/rating", async (req, res) => {
+  try {
+    let raiting = await DifficultyRating.getByArticleIdAndUserId(req.params.articleId, req.params.userId);
+    if (raiting) {
+      raiting.raiting = req.body.raiting;
+    } else {
+      const id = null;
+      raiting = DifficultyRating({id, req.params.articleId, req.params.user_id, req.body.raiting });
+    }
+    raiting.save();
+    res.status(200).json(raiting);
+  } catch (err) {
+    const message = "Error getting article raiting";
+    res.status(500, message);
+  }
+});
+
+// Get a prticular's article raiting average
+router.delete("/:articleId/rating", async (req, res) => {
+  try {
+    const raiting = await DifficultyRating.getByArticleIdAndUserId(req.params.articleId, req.user.id);
+    raiting.delete();
+    res.status(200).json("Difficoulty raiting deleted");
+  } catch (err) {
+    const message = "Error getting article raiting";
+    res.status(500, message);
+  }
+});
 
 // Get a particular articles translation made by a particular user
 router.get("/:articleId/translation/:authorId", async (req, res) => {
