@@ -8,6 +8,7 @@ const DifficultyRating = require("../objects/DifficultyRating");
 // Get all articles
 router.get("/", async (req, res) => {
   try {
+    console.log("Getting articles");
     const articles = await Article.getAll();
     res.status(200).json(articles);
   } catch (err) {

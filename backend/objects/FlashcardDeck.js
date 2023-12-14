@@ -1,4 +1,5 @@
 const ORMBase = require('./ORMBase');
+const db = require('../database');
 
 class FlashcardDeck extends ORMBase {
   constructor({ id, author_id, name, description }) {
@@ -10,7 +11,7 @@ class FlashcardDeck extends ORMBase {
 
   static async getAllByAuthor(author_id) {
     const query = `SELECT * FROM FlashcardDeck WHERE author_id = ?`;
-    const [rows] = await db.query(query);
+    const [rows] = await db.query(query, author_id);
     const objects = rows.map((entry) => new this(entry));
     return objects;
   }
