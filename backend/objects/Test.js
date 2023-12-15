@@ -1,10 +1,10 @@
 const ORMBase = require("./ORMBase");
 
 class Test extends ORMBase {
-  table_name ="Test";
 
   constructor({ id, group_id, name, difficulty }) {
     super(id);
+    this.table_name ="Test";
     this.group_id = group_id;
     this.name = name;
     this.difficulty = difficulty;

@@ -5,6 +5,7 @@ class Choice extends ORMBase {
 
   constructor({ id, question_id, content }) {
     super(id);
+    this.table_name = "Choice";
     this.question_id = question_id;
     this.content = content;
   }

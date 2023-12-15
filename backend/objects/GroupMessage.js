@@ -5,6 +5,7 @@ class GroupMessage extends ORMBase {
 
   constructor({ id, group_id, user_id, text}) {
     super(id);
+    this.table_name = "GroupMessage";
     this.group_id = group_id;
     this.user_id = user_id;
     this.text = text;

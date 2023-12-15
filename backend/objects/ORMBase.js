@@ -1,8 +1,8 @@
 const db = require("../database");
 
 class ORMBase {
-  table_name = "ORMBASE";
   constructor(id) {
+    this.table_name = "ORMBase";
     this.id = id;
   }
 

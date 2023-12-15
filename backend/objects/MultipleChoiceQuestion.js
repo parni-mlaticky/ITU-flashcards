@@ -4,7 +4,8 @@ class MultipleChoiceQuestion extends ORMBase {
   table_name ="MultipleChoiceQuestion";
 
   constructor({ id, test_id, question, answer }) {
-    super(id);
+    super(id);    
+    this.table_name ="MultipleChoiceQuestion";
     this.test_id = test_id;
     this.question = question;
     this.answer = answer;

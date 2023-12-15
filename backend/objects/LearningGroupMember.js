@@ -5,6 +5,7 @@ class LearningGroupMember extends ORMBase {
 
   constructor({ id, group_id, user_id }) {
     super(id);
+    this.table_name = "LearningGroupMember";
     this.group_id = group_id;
     this.user_id = user_id;
   }

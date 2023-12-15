@@ -5,6 +5,7 @@ class Flashcard extends ORMBase {
 
   constructor({ id, deck_id, front, back, image }) {
     super(id);
+    this.table_name = "Flashcard"
     this.deck_id = deck_id;
     this.front = front;
     this.back = back;
