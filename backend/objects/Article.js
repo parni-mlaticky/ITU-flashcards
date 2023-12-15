@@ -1,8 +1,8 @@
 const ORMBase = require("./ORMBase");
 
 class Article extends ORMBase {
-  table_name ="Article";
-
+  static table_name ="Article";
+  
   constructor({ id, heading, content, source_link, cover_image_link }) {
     super(id);
     this.table_name = "Article";

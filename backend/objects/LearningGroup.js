@@ -5,7 +5,7 @@ const RegisteredUser = require("./RegisteredUser");
 const Test = require("./Test");
 
 class LearningGroup extends ORMBase {
-  table_name ="LearningGroup";
+  static table_name ="LearningGroup";
 
   constructor({ id, name, description, lector_id }) {
     super(id);
