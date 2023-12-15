@@ -4,13 +4,14 @@ import { VStack, Box, Center, Heading, Text, Fab, Icon } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import BASE_URL from "./url";
+import BASE_URL from "../url";
 
 axios.defaults.baseURL = BASE_URL;
 
 const DecksScreen = ({ navigation }) => {
   const [decks, setDecks] = React.useState([]);
   const [isFabVisible, setIsFabVisible] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     const fetchDecks = async () => {
       try {
@@ -27,7 +28,7 @@ const DecksScreen = ({ navigation }) => {
     };
 
     fetchDecks();
-  }, []);
+  }, [refresh]);
   return (
     <Center flex={1} px={3} bg="coolGray.50">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -45,7 +46,7 @@ const DecksScreen = ({ navigation }) => {
           position="absolute"
           size="sm"
           icon={<Icon name="add" />}
-          onPress={() => navigation.navigate("DeckCreate")}
+          onPress={() => navigation.navigate("DeckCreate", { setRefresh })}
         />
       )}
     </Center>

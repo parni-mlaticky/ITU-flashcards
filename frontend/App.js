@@ -50,7 +50,7 @@ export default function App() {
       });
       if (response.status == 200) {
         await AsyncStorage.setItem("token", response.data.token);
-        await AsyncStorage.setItem("user", response.data.user);
+        await AsyncStorage.setItem("user", String(response.data.user.id));
         setIsAuthenticated(true);
         navigation.navigate("Decks");
       } else {
@@ -81,7 +81,8 @@ export default function App() {
       if (response.status == 201) {
         console.log("Registered!");
         await AsyncStorage.setItem("token", response.data.token);
-        await AsyncStorage.setItem("user", response.data.user);
+        console.log(response.data.user);
+        await AsyncStorage.setItem("user", String(response.data.user.id));
         setIsAuthenticated(true);
         navigation.navigate("Decks");
       } else {

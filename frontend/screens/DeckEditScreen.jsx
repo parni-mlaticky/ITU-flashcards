@@ -11,7 +11,7 @@ import {
 } from "native-base";
 import axios from "axios";
 
-import BASE_URL from "./url";
+import BASE_URL from "../url";
 
 axios.defaults.baseURL = BASE_URL;
 

@@ -13,16 +13,20 @@ class ORMBase {
 
   get_column_names() {
     const column_names = [];
-    for(const [key, value] of Object.entries(this)) {
-      if(key != "id" && key != "table_name" && typeof value != "function") { column_names.push(key); }
+    for (const [key, value] of Object.entries(this)) {
+      if (key != "id" && key != "table_name" && typeof value != "function") {
+        column_names.push(key);
+      }
     }
     return column_names.join(", ");
   }
 
   get_column_values() {
     const column_values = [];
-    for(const [key, value] of Object.entries(this)) {
-      if(key != "id" && key != "table_name" && typeof value != "function") { column_values.push(value); }
+    for (const [key, value] of Object.entries(this)) {
+      if (key != "id" && key != "table_name" && typeof value != "function") {
+        column_values.push(value);
+      }
     }
     return column_values;
   }
@@ -39,26 +43,35 @@ class ORMBase {
 
   get_question_marks() {
     const question_marks = [];
-    for(const [key, value] of Object.entries(this)) {
-      if(key != "id" && key != "table_name" && typeof value != "function") { question_marks.push("?"); }
+    for (const [key, value] of Object.entries(this)) {
+      if (key != "id" && key != "table_name" && typeof value != "function") {
+        question_marks.push("?");
+      }
     }
     return question_marks.join(", ");
   }
 
   async save() {
-    if(this.id == null) { await this.insert(); }
-    else { await this.update(); }
+    if (this.id == null) {
+      await this.insert();
+    } else {
+      await this.update();
+    }
     return this;
   }
 
   async insert() {
-    const query = `INSERT INTO ${this.table_name} ( ${this.get_column_names()} ) VALUES ( ${this.get_question_marks()} )`;
+    const query = `INSERT INTO ${
+      this.table_name
+    } ( ${this.get_column_names()} ) VALUES ( ${this.get_question_marks()} )`;
     const [rows] = await db.query(query, this.get_column_values());
     this.id = rows.insertId;
   }
 
-  async update () {
-    const query = `UPDATE ${this.table_name} SET ${this.get_column_pairs()} WHERE id = ?`;  
+  async update() {
+    const query = `UPDATE ${
+      this.table_name
+    } SET ${this.get_column_pairs()} WHERE id = ?`;
     await db.query(query, this.get_column_values().concat(this.id));
   }
 
@@ -72,7 +85,7 @@ class ORMBase {
     const [rows] = await db.query(query, [id]);
 
     if (rows.length === 0) {
-        return null;
+      return null;
     }
 
     const row = rows[0];
@@ -81,14 +94,13 @@ class ORMBase {
     return instance;
   }
 
-
   // Carefull not all tables have name!
   static async getByName(name) {
     const query = `SELECT * FROM ${this.table_name} WHERE name = ?`;
     const [rows] = await db.query(query, [name]);
 
     if (rows.length === 0) {
-        return null;
+      return null;
     }
 
     const row = rows[0];

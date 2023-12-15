@@ -3,18 +3,19 @@ import { Button, FormControl, Input, Center, VStack, Text } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import BASE_URL from "./url";
+import BASE_URL from "../url";
 
 axios.defaults.baseURL = BASE_URL;
 
-const DeckCreateScreen = ({ navigation }) => {
+const DeckCreateScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const { setRefresh } = route.params;
 
   const handleCreateDeck = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-      const author_id = await AsyncStorage.getItem("user").id;
+      const author_id = Number(await AsyncStorage.getItem("user"));
       const response = await axios.post(
         "/decks",
         {
@@ -29,8 +30,8 @@ const DeckCreateScreen = ({ navigation }) => {
         },
       );
 
-      console.log("Deck created:", response.data);
-      navigation.goBack();
+      navigation.navigate("Decks");
+      setRefresh((prev) => !prev);
     } catch (error) {
       console.error("Error creating deck", error);
     }
