@@ -3,11 +3,13 @@ import { NativeBaseProvider, extendTheme, Button, Text } from "native-base";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import DecksScreen from "./screens/DecksScreen";
-import GroupsScreen from "./screens/GroupsScreen";
 import ArticlesScreen from "./screens/ArticlesScreen";
 import DeckDetailScreen from "./screens/DeckDetailScreen";
 import DeckCreateScreen from "./screens/DeckCreateScreen";
 import DeckEditScreen from "./screens/DeckEditScreen";
+import GroupsScreen from "./screens/GroupsScreen";
+import GroupDetailsScreen from "./screens/GroupDetailsScreen";
+import GroupCreateScreen from "./screens/GroupCreateScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState, useEffect } from "react";
@@ -155,6 +157,8 @@ export default function App() {
               <Stack.Screen name="DeckCreate" component={DeckCreateScreen} />
               <Stack.Screen name="DeckEdit" component={DeckEditScreen} />
               <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
+              <Stack.Screen name="GroupCreate" component={GroupCreateScreen} />
+              <Stack.Screen name="GroupDetails" component={GroupDetailsScreen} />
             </>
           ) : (
             <>

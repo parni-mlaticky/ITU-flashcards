@@ -1,4 +1,5 @@
 const ORMBase = require("./ORMBase");
+const db = require("../database");
 
 class LearningGroupMember extends ORMBase {
   static table_name ="LearningGroupMember";
