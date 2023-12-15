@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   VStack,
   Box,
@@ -13,26 +14,14 @@ import {
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, handleLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post("http://192.168.0.29:3000/auth/login", {
-        username,
-        password,
-      });
-      if (response.status == 200) {
-        console.log("Logged In!");
-        navigation.navigate("Decks", response.data);
-      } else {
-        console.log("Error logging in!", response.data);
-      }
-    } catch (error) {
-      console.log("Error logging in!", error);
-    }
+  const onLoginPress = async () => {
+    handleLogin(username, password, navigation);
   };
+
   return (
     <Center flex={1} px={3} bg="coolGray.50">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -84,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
             w="100%"
             h="40px"
             colorScheme="indigo"
-            onPress={handleLogin}
+            onPress={onLoginPress}
           />
           <Button
             variant="ghost"

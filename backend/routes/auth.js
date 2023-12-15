@@ -7,8 +7,10 @@ const wrapped = require("./errorWrapper");
 
 module.exports = router;
 
-router.post("/login", wrapped(async (req, res) => {
-    if (req.user) {
+router.post(
+  "/login",
+  wrapped(async (req, res) => {
+    if (req.user.id && req.user.id !== -1) {
       return res.status(200).json({ message: "Already logged in" });
     }
     const { username, password } = req.body;
@@ -20,38 +22,44 @@ router.post("/login", wrapped(async (req, res) => {
       return res.status(401).json({ message: "Incorrect password" });
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.cookie("token", token, { httpOnly: true });
-    return res.status(200).json({ message: "Logged in" });
-}));
+    return res.status(200).json({ token: token, message: "Logged in" });
+  }),
+);
 
-router.post("/register", wrapped(async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await RegisteredUser.getByUsername(username);
-    if (user) {
-      return res.status(409).json({ message: "Username already exists" });
+router.post(
+  "/register",
+  wrapped(async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      const user = await RegisteredUser.getByUsername(username);
+      if (user) {
+        return res.status(409).json({ message: "Username already exists" });
+      }
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      let newUser = new RegisteredUser({
+        username,
+        password: hashedPassword,
+      });
+      newUser = await newUser.save();
+      const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
+      res.status(201).json({ token: token, message: "Registered" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
     }
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    let newUser = new RegisteredUser({
-      username,
-      password: hashedPassword,
-    });
-    newUser = await newUser.save();
-    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
-    res.cookie("token", token, { httpOnly: true });
-    res.status(201).json({ message: "Registered" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}));
+  }),
+);
 
-router.post("/logout", wrapped((req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logged out" });
-}));
+router.post(
+  "/logout",
+  wrapped((req, res) => {
+    res.status(200).json({ message: "Logged out" });
+  }),
+);
 
-router.get("/logout", wrapped((req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logged out" });
-}));
+router.get(
+  "/logout",
+  wrapped((req, res) => {
+    res.status(200).json({ message: "Logged out" });
+  }),
+);

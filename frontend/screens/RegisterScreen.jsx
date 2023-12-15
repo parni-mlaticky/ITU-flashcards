@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   VStack,
   Box,
@@ -13,35 +14,13 @@ import {
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation, handleRegister }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleRegister = async () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        "http://192.168.115.92:3000/auth/register",
-        {
-          username,
-          password,
-        },
-      );
-
-      if (response.status == 201) {
-        console.log("Registered!");
-        navigation.navigate("Decks", response.data);
-      } else {
-        console.log("Error registering!", response.data);
-      }
-    } catch (error) {
-      console.log("Error registering!", error);
-    }
+  const onRegisterPress = async () => {
+    handleRegister(username, password, confirmPassword, navigation);
   };
 
   return (
@@ -98,7 +77,7 @@ const RegisterScreen = ({ navigation }) => {
             w="100%"
             h="40px"
             colorScheme="indigo"
-            onPress={handleRegister}
+            onPress={onRegisterPress}
           />
 
           <Button
