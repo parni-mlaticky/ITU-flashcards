@@ -13,7 +13,7 @@ class Test extends ORMBase {
     const [rows] = await db.query(query, group_id);
     return rows.map(row => new this(row));
   }
-  get name() { return "Test"; }
+  get table_name() { return "Test"; }
 }
 
 

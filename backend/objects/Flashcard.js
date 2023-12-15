@@ -15,7 +15,7 @@ class Flashcard extends ORMBase {
     const objects = rows.map((entry) => new this(entry));
     return objects;
   }
-  get name() { return "Flashcard"; }
+  get table_name() { return "Flashcard"; }
 }
 
 module.exports = Flashcard;
