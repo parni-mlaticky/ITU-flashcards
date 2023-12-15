@@ -15,6 +15,7 @@ class FlashcardDeck extends ORMBase {
     const objects = rows.map((entry) => new this(entry));
     return objects;
   }
+  get name() { return "FlashcardDeck"; }
 }
 
 module.exports = FlashcardDeck;

@@ -13,6 +13,7 @@ class GroupMessage extends ORMBase {
     const [rows] = await db.query(query, group_id);
     return rows.map(row => new this(row));
   }
+  get name() { return "GroupMessage"; }
 }
 
 module.exports = GroupMessage;

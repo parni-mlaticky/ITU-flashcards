@@ -23,6 +23,7 @@ class DifficultyRating extends ORMBase {
     }
     return this(rows[0]);
   }
+  get name() { return "DifficultyRating"; }
 }
 
 module.exports = DifficultyRating;

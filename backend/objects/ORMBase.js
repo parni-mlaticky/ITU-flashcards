@@ -9,6 +9,8 @@ class ORMBase {
     return new this(id);
   }
 
+  get name(){ return "ORMBASE"; }
+
   get_column_names() {
     const column_names = [];
     for(const [key, value] of Object.entries(this)) {

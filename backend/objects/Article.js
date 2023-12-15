@@ -8,6 +8,9 @@ class Article extends ORMBase {
     this.source_link = source_link;
     this.cover_image_link = cover_image_link;
   }
+
+  get name() { return "Article"; }
+
 }
 
 module.exports = Article;

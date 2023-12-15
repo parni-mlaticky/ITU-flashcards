@@ -42,6 +42,8 @@ class LearningGroup extends ORMBase {
     const message = new GroupMessage({ group_id, user_id, text });
     await message.save();
   }
+
+  get name() { return "LearningGroup"; }
 }
 
 module.exports = LearningGroup;

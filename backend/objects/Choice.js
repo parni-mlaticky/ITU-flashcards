@@ -6,6 +6,8 @@ class Choice extends ORMBase {
     this.question_id = question_id;
     this.content = content;
   }
+
+  get name() { return "Choice"; }
 }
 
 
