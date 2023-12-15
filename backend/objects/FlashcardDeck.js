@@ -6,6 +6,7 @@ class FlashcardDeck extends ORMBase {
 
   constructor({ id, author_id, name, description }) {
     super(id);
+    this.table_name = "FlashcardDeck";
     this.author_id = author_id;
     this.name = name;
     this.description = description;
