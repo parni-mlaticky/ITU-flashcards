@@ -7,7 +7,7 @@ class FulltextAnswer extends ORMBase {
     this.user_id = user_id;
     this.answer = answer;
   }
-  get name() { return "FulltextAnswer"; }
+  get table_name() { return "FulltextAnswer"; }
 }
 
 module.exports = FulltextAnswer;

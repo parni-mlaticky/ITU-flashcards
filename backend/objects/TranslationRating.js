@@ -7,7 +7,7 @@ class TranslationRating extends ORMBase {
     this.user_id = user_id;
     this.rating = rating;
   }
-  get name() { return "TranslationRating"; }
+  get table_name() { return "TranslationRating"; }
 }
 
 module.exports = TranslationRating;

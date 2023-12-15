@@ -43,7 +43,7 @@ class LearningGroup extends ORMBase {
     await message.save();
   }
 
-  get name() { return "LearningGroup"; }
+  get table_name() { return "LearningGroup"; }
 }
 
 module.exports = LearningGroup;

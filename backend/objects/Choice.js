@@ -7,7 +7,7 @@ class Choice extends ORMBase {
     this.content = content;
   }
 
-  get name() { return "Choice"; }
+  get table_name() { return "Choice"; }
 }
 
 

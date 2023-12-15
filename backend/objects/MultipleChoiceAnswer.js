@@ -7,7 +7,7 @@ class MultipleChoiceAnswer extends ORMBase {
     this.user_id = user_id;
     this.choice_id = choice_id
   }
-  get name() { return "MultipleChoiceAnswer"; }
+  get table_name() { return "MultipleChoiceAnswer"; }
 }
 
 module.exports = MultipleChoiceAnswer;

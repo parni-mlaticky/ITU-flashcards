@@ -9,7 +9,7 @@ class Article extends ORMBase {
     this.cover_image_link = cover_image_link;
   }
 
-  get name() { return "Article"; }
+  get table_name() { return "Article"; }
 
 }
 

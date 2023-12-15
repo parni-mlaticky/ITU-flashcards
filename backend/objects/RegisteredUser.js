@@ -8,7 +8,7 @@ class RegisteredUser extends ORMBase {
     this.password = password;
   }
 
-  get name() { return "RegisteredUser"; }
+  get table_name() { return "RegisteredUser"; }
 
   static getByUsername = async (username) => {
     const query = "SELECT * FROM RegisteredUser WHERE username = ?";
