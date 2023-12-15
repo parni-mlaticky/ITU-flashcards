@@ -1,7 +1,7 @@
 const ORMBase = require("./ORMBase");
 
 class MultipleChoiceQuestion extends ORMBase {
-  table_name ="MultipleChoiceQuestion";
+  static table_name ="MultipleChoiceQuestion";
 
   constructor({ id, test_id, question, answer }) {
     super(id);    

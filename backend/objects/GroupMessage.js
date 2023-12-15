@@ -1,7 +1,7 @@
 const ORMBase = require("./ORMBase");
 
 class GroupMessage extends ORMBase {
-  table_name ="GroupMessage";
+  static table_name ="GroupMessage";
 
   constructor({ id, group_id, user_id, text}) {
     super(id);

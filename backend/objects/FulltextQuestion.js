@@ -1,7 +1,7 @@
 const ORMBase = require('./ORMBase');
 
 class FulltextQuestion extends ORMBase {
-  table_name ="FulltextQuestion";
+  static table_name ="FulltextQuestion";
 
   constructor({ id, test_id, question, answer }) {
     super(id);

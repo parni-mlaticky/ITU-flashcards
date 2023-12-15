@@ -1,7 +1,7 @@
 const ORMBase = require('./ORMBase');
 
 class Flashcard extends ORMBase {
-  table_name ="Flashcard";
+  static table_name ="Flashcard";
 
   constructor({ id, deck_id, front, back, image }) {
     super(id);

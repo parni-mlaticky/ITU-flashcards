@@ -2,6 +2,8 @@ const db = require("../database");
 const ORMBase = require("./ORMBase");
 
 class RegisteredUser extends ORMBase {
+  static table_name = "RegisteredUser"
+
   constructor({ id, username, password }) {
     super(id);
     this.table_name = RegisteredUser;

@@ -1,6 +1,7 @@
 const ORMBase = require("./ORMBase");
 
 class Test extends ORMBase {
+  static table_name = "Test";
 
   constructor({ id, group_id, name, difficulty }) {
     super(id);

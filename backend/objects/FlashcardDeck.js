@@ -2,7 +2,7 @@ const ORMBase = require('./ORMBase');
 const db = require('../database');
 
 class FlashcardDeck extends ORMBase {
-  table_name ="FlashcardDeck";
+  static table_name ="FlashcardDeck";
 
   constructor({ id, author_id, name, description }) {
     super(id);

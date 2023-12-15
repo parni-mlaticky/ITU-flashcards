@@ -1,7 +1,7 @@
 const ORMBase = require("./ORMBase");
 
 class DifficultyRating extends ORMBase {
-  table_name ="DifficultyRating";
+  static table_name ="DifficultyRating";
 
   constructor({ id, article_id, user_id, rating }) {
     super(id);
