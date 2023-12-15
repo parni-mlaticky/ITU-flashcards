@@ -1,16 +1,21 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { VStack, Box, Center, Heading, Text } from "native-base";
+import { VStack, Box, Center, Heading, Text, Fab, Icon } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import BASE_URL from "./url";
+
+axios.defaults.baseURL = BASE_URL;
+
 const DecksScreen = ({ navigation }) => {
   const [decks, setDecks] = React.useState([]);
+  const [isFabVisible, setIsFabVisible] = useState(true);
   useEffect(() => {
     const fetchDecks = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
-        const response = await axios.get("http://192.168.0.29:3000/decks", {
+        const response = await axios.get("/decks", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -29,13 +34,20 @@ const DecksScreen = ({ navigation }) => {
         <Heading size="lg" fontWeight="600" color="coolGray.800">
           Your Decks
         </Heading>
-        {/* Render your decks here */}
         {decks.map((deck, index) => (
           <Text key={index}>
             {deck.name} - {deck.description}
           </Text>
         ))}
       </Box>
+      {isFabVisible && (
+        <Fab
+          position="absolute"
+          size="sm"
+          icon={<Icon name="add" />}
+          onPress={() => navigation.navigate("DeckCreate")}
+        />
+      )}
     </Center>
   );
 };

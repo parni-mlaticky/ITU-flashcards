@@ -22,7 +22,9 @@ router.post(
       return res.status(401).json({ message: "Incorrect password" });
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    return res.status(200).json({ token: token, message: "Logged in" });
+    return res
+      .status(200)
+      .json({ token: token, message: "Logged in", user: user });
   }),
 );
 
@@ -42,7 +44,9 @@ router.post(
       });
       newUser = await newUser.save();
       const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
-      res.status(201).json({ token: token, message: "Registered" });
+      res
+        .status(201)
+        .json({ token: token, message: "Registered", user: newUser });
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Internal server error" });

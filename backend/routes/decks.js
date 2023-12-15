@@ -27,7 +27,6 @@ router.post(
   }),
 );
 
-// Get particular deck by id
 router.get(
   "/:deckId",
   wrapped(async (req, res) => {

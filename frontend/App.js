@@ -5,6 +5,9 @@ import LoginScreen from "./screens/LoginScreen";
 import DecksScreen from "./screens/DecksScreen";
 import GroupsScreen from "./screens/GroupsScreen";
 import ArticlesScreen from "./screens/ArticlesScreen";
+import DeckDetailScreen from "./screens/DeckDetailScreen";
+import DeckCreateScreen from "./screens/DeckCreateScreen";
+import DeckEditScreen from "./screens/DeckEditScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState, useEffect } from "react";
@@ -47,6 +50,7 @@ export default function App() {
       });
       if (response.status == 200) {
         await AsyncStorage.setItem("token", response.data.token);
+        await AsyncStorage.setItem("user", response.data.user);
         setIsAuthenticated(true);
         navigation.navigate("Decks");
       } else {
@@ -77,6 +81,7 @@ export default function App() {
       if (response.status == 201) {
         console.log("Registered!");
         await AsyncStorage.setItem("token", response.data.token);
+        await AsyncStorage.setItem("user", response.data.user);
         setIsAuthenticated(true);
         navigation.navigate("Decks");
       } else {
@@ -89,6 +94,7 @@ export default function App() {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("user");
     setIsAuthenticated(false);
   };
 
@@ -133,13 +139,18 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           {isAuthenticated ? (
-            <Stack.Screen
-              name="Home"
-              component={AuthenticatedTabs}
-              options={{
-                headerShown: false,
-              }}
-            />
+            <>
+              <Stack.Screen
+                name="Home"
+                component={AuthenticatedTabs}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen name="DeckDetail" component={DeckDetailScreen} />
+              <Stack.Screen name="DeckCreate" component={DeckCreateScreen} />
+              <Stack.Screen name="DeckEdit" component={DeckEditScreen} />
+            </>
           ) : (
             <>
               <Stack.Screen name="Login">
