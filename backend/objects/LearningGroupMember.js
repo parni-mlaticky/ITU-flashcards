@@ -12,6 +12,7 @@ class LearningGroupMember extends ORMBase {
     const [rows] = await db.query(query, group_id);
     return rows.map(row => new this(row));
   }
+  get name() { return "LearningGroupMember"; }
 }
 
 module.exports = LearningGroupMember;

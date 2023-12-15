@@ -7,6 +7,7 @@ class MultipleChoiceQuestion extends ORMBase {
     this.question = question;
     this.answer = answer;
   }
+  get name() { return "MultipleChoiceQuestion"; }
 }
 
 module.exports = MultipleChoiceQuestion;

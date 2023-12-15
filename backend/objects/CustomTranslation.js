@@ -23,6 +23,8 @@ class CustomTranslation extends ORMBase {
 
     return instance;
   }
+
+ get name() { return "CustomTranslation"; }
 }
 
 module.exports = CustomTranslation;
