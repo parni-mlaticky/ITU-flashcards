@@ -1,6 +1,8 @@
 const ORMBase = require("./ORMBase");
 
 class GroupMessage extends ORMBase {
+  table_name ="GroupMessage";
+
   constructor({ id, group_id, user_id, text}) {
     super(id);
     this.group_id = group_id;
@@ -13,7 +15,6 @@ class GroupMessage extends ORMBase {
     const [rows] = await db.query(query, group_id);
     return rows.map(row => new this(row));
   }
-  get table_name() { return "GroupMessage"; }
 }
 
 module.exports = GroupMessage;

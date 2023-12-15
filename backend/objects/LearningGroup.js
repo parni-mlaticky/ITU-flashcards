@@ -5,6 +5,8 @@ const RegisteredUser = require("./RegisteredUser");
 const Test = require("./Test");
 
 class LearningGroup extends ORMBase {
+  table_name ="LearningGroup";
+
   constructor({ id, name, description, lector_id }) {
     super(id);
     this.name = name;
@@ -42,8 +44,6 @@ class LearningGroup extends ORMBase {
     const message = new GroupMessage({ group_id, user_id, text });
     await message.save();
   }
-
-  get table_name() { return "LearningGroup"; }
 }
 
 module.exports = LearningGroup;

@@ -1,6 +1,8 @@
 const ORMBase = require("./ORMBase");
 
 class DifficultyRating extends ORMBase {
+  table_name ="DifficultyRating";
+
   constructor({ id, article_id, user_id, rating }) {
     super(id);
     this.article_id = article_id;
@@ -23,7 +25,6 @@ class DifficultyRating extends ORMBase {
     }
     return this(rows[0]);
   }
-  get table_name() { return "DifficultyRating"; }
 }
 
 module.exports = DifficultyRating;

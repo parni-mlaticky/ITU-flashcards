@@ -1,6 +1,8 @@
 const ORMBase = require("./ORMBase");
 
 class CustomTranslation extends ORMBase {
+  table_name ="CustomTranslation";
+
   constructor({ id, author_id, article_id, start_char_index, end_char_index, content }) {
     super(id);
     this.author_id = author_id;
@@ -23,8 +25,6 @@ class CustomTranslation extends ORMBase {
 
     return instance;
   }
-
- get table_name() { return "CustomTranslation"; }
 }
 
 module.exports = CustomTranslation;
