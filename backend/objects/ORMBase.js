@@ -1,6 +1,7 @@
 const db = require("../database");
 
 class ORMBase {
+  table_name = "ORMBASE";
   constructor(id) {
     this.id = id;
   }
@@ -9,12 +10,10 @@ class ORMBase {
     return new this(id);
   }
 
-  get table_name(){ return "ORMBASE"; }
-
   get_column_names() {
     const column_names = [];
     for(const [key, value] of Object.entries(this)) {
-      if(key != "id" && typeof value != "function") { column_names.push(key); }
+      if(key != "id" && key != "table_name" && typeof value != "function") { column_names.push(key); }
     }
     return column_names.join(", ");
   }
@@ -22,7 +21,7 @@ class ORMBase {
   get_column_values() {
     const column_values = [];
     for(const [key, value] of Object.entries(this)) {
-      if(key != "id" && typeof value != "function") { column_values.push(value); }
+      if(key != "id" && key != "table_name" && typeof value != "function") { column_values.push(value); }
     }
     return column_values;
   }
@@ -30,7 +29,7 @@ class ORMBase {
   get_column_pairs() {
     const column_pairs = [];
     for (const [key, value] of Object.entries(this)) {
-      if (key !== "id" && typeof value !== "function") {
+      if (key !== "id" && key != "table_name" && typeof value !== "function") {
         column_pairs.push(`${key} = ?`);
       }
     }
@@ -40,7 +39,7 @@ class ORMBase {
   get_question_marks() {
     const question_marks = [];
     for(const [key, value] of Object.entries(this)) {
-      if(key != "id" && typeof value != "function") { question_marks.push("?"); }
+      if(key != "id" && key != "table_name" && typeof value != "function") { question_marks.push("?"); }
     }
     return question_marks.join(", ");
   }

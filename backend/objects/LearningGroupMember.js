@@ -1,6 +1,8 @@
 const ORMBase = require("./ORMBase");
 
 class LearningGroupMember extends ORMBase {
+  table_name ="LearningGroupMember";
+
   constructor({ id, group_id, user_id }) {
     super(id);
     this.group_id = group_id;
@@ -12,7 +14,6 @@ class LearningGroupMember extends ORMBase {
     const [rows] = await db.query(query, group_id);
     return rows.map(row => new this(row));
   }
-  get table_name() { return "LearningGroupMember"; }
 }
 
 module.exports = LearningGroupMember;

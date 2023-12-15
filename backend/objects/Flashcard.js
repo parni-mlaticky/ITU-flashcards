@@ -1,6 +1,8 @@
 const ORMBase = require('./ORMBase');
 
 class Flashcard extends ORMBase {
+  table_name ="Flashcard";
+
   constructor({ id, deck_id, front, back, image }) {
     super(id);
     this.deck_id = deck_id;
@@ -15,7 +17,6 @@ class Flashcard extends ORMBase {
     const objects = rows.map((entry) => new this(entry));
     return objects;
   }
-  get table_name() { return "Flashcard"; }
 }
 
 module.exports = Flashcard;

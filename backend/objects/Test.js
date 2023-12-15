@@ -1,6 +1,8 @@
 const ORMBase = require("./ORMBase");
 
 class Test extends ORMBase {
+  table_name ="Test";
+
   constructor({ id, group_id, name, difficulty }) {
     super(id);
     this.group_id = group_id;
@@ -13,7 +15,6 @@ class Test extends ORMBase {
     const [rows] = await db.query(query, group_id);
     return rows.map(row => new this(row));
   }
-  get table_name() { return "Test"; }
 }
 
 
