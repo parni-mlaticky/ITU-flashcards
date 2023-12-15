@@ -4,16 +4,13 @@ import { VStack, Box, Center, Heading, Text } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { BASE_URL } from "@env";
-axios.defaults.baseURL = BASE_URL;
-
 const DecksScreen = ({ navigation }) => {
   const [decks, setDecks] = React.useState([]);
   useEffect(() => {
     const fetchDecks = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
-        const response = await axios.get("/decks", {
+        const response = await axios.get("http://192.168.0.29:3000/decks", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

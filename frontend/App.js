@@ -13,10 +13,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import axios from "axios";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import { BASE_URL } from "@env";
-console.log(BASE_URL);
-axios.defaults.baseURL = BASE_URL;
-
 const Stack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
@@ -42,7 +38,7 @@ export default function App() {
 
   const handleLogin = async (username, password, navigation) => {
     try {
-      const response = await axios.post("/auth/login", {
+      const response = await axios.post("http://192.168.0.29:3000/auth/login", {
         username,
         password,
       });
@@ -70,10 +66,13 @@ export default function App() {
     }
 
     try {
-      const response = await axios.post("/auth/register", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "http://192.168.0.29:3000/auth/register",
+        {
+          username,
+          password,
+        },
+      );
 
       if (response.status == 201) {
         console.log("Registered!");
@@ -100,14 +99,12 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Decks") {
-              iconName = focused ? "ios-list-box" : "ios-list";
+              iconName = focused ? "home" : "home-outline";
             } else if (route.name === "Groups") {
               iconName = focused ? "ios-people" : "ios-people-outline";
             } else if (route.name === "Articles") {
               iconName = focused ? "ios-document" : "ios-document-outline";
             }
-
-            // You can return any component that you like here
             return <Icon name={iconName} size={size} color={color} />;
           },
           headerRight: () => (

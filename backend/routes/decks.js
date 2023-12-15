@@ -9,6 +9,7 @@ const wrapped = require("./errorWrapper");
 router.get(
   "/",
   wrapped(async (req, res) => {
+    console.log("xd");
     const decks = await FlashcardDeck.getAllByAuthor(req.user.id);
     res.status(200).json(decks);
   }, "Error getting decks"),
