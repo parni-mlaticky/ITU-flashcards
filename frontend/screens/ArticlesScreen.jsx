@@ -12,6 +12,7 @@ import {
   Heading,
   Button,
   FormControl,
+  ScrollView
 } from "native-base";
 import { Keyboard } from "react-native";
 import CustomInput from "../components/CustomInput";
@@ -19,8 +20,8 @@ import CustomButton from "../components/CustomButton";
 import ArticlePreview from "../components/ArticlePreview";
 import SelectionOverlay from "../components/SelectionOverlay";
 
-const ArticlesScreen = ({ navigation }) => {
-    const [data, setData] = useState(null);
+const ArticlesScreen = ({ navigation, route }) => {
+  const [data, setData] = useState(null);
     useEffect(() => {
         const fetchArticles = async () => {
           try {
@@ -28,13 +29,14 @@ const ArticlesScreen = ({ navigation }) => {
             setData(response.data);
           } catch (error) {
             console.error("Error fetching articles", error);
-          }
-         
+          }   
     };
+
     const unsubscribe = navigation.addListener("focus", () => {
       console.log("fetching");
       fetchArticles();
     });
+    
       fetchArticles();
       return unsubscribe;
     }, [navigation]);
@@ -53,7 +55,6 @@ const ArticlesScreen = ({ navigation }) => {
 
     const handleOpenArticle = (article) => {
       navigation.navigate("ArticleDetail", article);
-      console.log("open article pressed");
     }
 
     const handleAddToDeck = () => {
@@ -61,6 +62,7 @@ const ArticlesScreen = ({ navigation }) => {
     }
 
   return (
+    <ScrollView>
     <Box flex={1} px={3} bg="coolGray.50">
       <Box safeArea p="4" py="0" w="100%" maxW="400">
         {
@@ -69,9 +71,9 @@ const ArticlesScreen = ({ navigation }) => {
               <View>
                 {data.map((article) => {
                   return (
-                    <Box>
-                      <ArticlePreview unselectCallback={unselect} previewSelectHandler={handleSelect} key={article.id} article={article} openArticleCallback={handleOpenArticle} />
-                      { selection.length && selection[1].id === article.id ? <SelectionOverlay selection={selection} closeCallback={() => setSelection([])} /> : null }
+                    <Box key={article.id}>
+                      <ArticlePreview navigation={navigation} unselectCallback={unselect} previewSelectHandler={handleSelect} article={article} openArticleCallback={handleOpenArticle} />
+                      { selection.length && selection[1].id === article.id ? <SelectionOverlay headerSelection={true} navigation={navigation} selection={selection} closeCallback={() => setSelection([])} /> : null }
                     </Box>
                   );
                 })}
@@ -82,6 +84,7 @@ const ArticlesScreen = ({ navigation }) => {
         }
       </Box>
     </Box>
+    </ScrollView>
   );
 };
 
