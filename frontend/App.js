@@ -170,10 +170,6 @@ export default function App() {
               <Stack.Screen name="CardDetail" component={CardDetailScreen} />
               <Stack.Screen name="CardCreate" component={CardCreateScreen} />
               <Stack.Screen name="CardEdit" component={CardEditScreen} />
-              <Stack.Screen
-                name="ArticleDetail"
-                component={ArticleDetailScreen}
-              />
               <Stack.Screen name="GroupCreate" component={GroupCreateScreen} />
               <Stack.Screen name="GroupUserList" component={GroupUserListScreen}/>
               <Stack.Screen name="GroupMarket" component={GroupMarketScreen}/>

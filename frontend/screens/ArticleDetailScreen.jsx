@@ -37,7 +37,6 @@ const ArticleDetailScreen = (article) => {
     useFocusEffect(
         useCallback(() => {
             checkIfUserHasTranslation();
-            
             setSelection([]);
         }, [article])
     );

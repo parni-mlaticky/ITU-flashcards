@@ -23,7 +23,7 @@ const CreateTranslationScreen = ({route, navigation}) => {
         const query = `/articles/${article.id}/translation`
         console.log(query)
         console.log(translationText);
-        await axios.post(query, {start_char_index: selection.start, end_char_index: selection.end, content: translationText, author_id: userId}) 
+        await axios.post(query, {start_char_index: selection.start, end_char_index: selection.end, content: translationText, author_id: userId})
         navigation.goBack();
     }
 
