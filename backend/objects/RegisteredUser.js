@@ -23,6 +23,15 @@ class RegisteredUser extends ORMBase {
     });
     return user;
   };
+
+  static getUsername = async (id) => {
+    const query = "SELECT username FROM RegisteredUser WHERE id = ?"
+    const [rows] = await db.query(query, [id]);
+    if (rows.length == 0) {
+      return null;
+    }
+    return rows[0];
+  }
 }
 
 module.exports = RegisteredUser;

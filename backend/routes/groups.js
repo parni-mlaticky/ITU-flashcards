@@ -13,9 +13,16 @@ router.get("/", wrapped(async (req, res) => {
 // Create new group 
 router.post("/", wrapped(async (req, res) => {
     const { name, description, lectorId } = req.body;
-    const group = new groupModel(null, name, description, lectorId);
+    const group = new groupModel({id: null, name, description, lector_id: lectorId});
     await group.save();
     res.status(200).json(group);
+}));
+
+// Get detail of group
+router.get("/:id/members", wrapped(async (req, res) => {
+    const group = await groupModel.getById(req.params.id);
+    const members = await group.getMembers();
+    res.status(200).json(members);
 }));
 
 // Get detail of group
@@ -38,6 +45,25 @@ router.delete("/:id", wrapped(async (req, res) => {
     const group = await groupModel.getById(req.params.id);
     await group.delete();
     res.status(200, "Group deleted successfully");
+}));
+
+// Join a particular user to a particualr group
+router.post("/:id/join", wrapped(async (req, res) => {
+    const group = await groupModel.getById(req.params.id);
+    const members = await group.getMembers();
+    let isMember = req.body.user_id == group.lector_id;
+    for (let i = 0; i < members.length && !isMember; i++) {
+        if (members[i].user_id == req.body.user_id) {
+            isMember = true;
+        }
+    }
+    if (isMember) {
+        res.status(200).json("User is already a member of this group.");
+    }
+    else {
+        await group.addUser(req.body.user_id);
+        res.status(200).json(group);
+    }
 }));
 
 // Chat for all members of the group

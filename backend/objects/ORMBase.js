@@ -62,7 +62,7 @@ class ORMBase {
 
   async insert() {
     const query = `INSERT INTO ${
-      this.table_name
+      this.constructor.name
     } ( ${this.get_column_names()} ) VALUES ( ${this.get_question_marks()} )`;
     const [rows] = await db.query(query, this.get_column_values());
     this.id = rows.insertId;
