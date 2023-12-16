@@ -55,8 +55,6 @@ const CardCreateScreen = ({ navigation, route }) => {
         );
       }
 
-      console.log("formData: ", formData);
-
       const deck_id = Number(deckId);
 
       const response = await axios.post(`/decks/${deck_id}/cards`, formData, {

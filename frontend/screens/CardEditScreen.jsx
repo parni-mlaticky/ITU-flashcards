@@ -58,7 +58,7 @@ const EditCardScreen = ({ route, navigation }) => {
         },
       );
 
-      navigation.navigate("CardDetail", { cardId: cardId, deckId: deckId });
+      navigation.navigate("DeckDetail", { deckId: deckId });
     } catch (error) {
       console.error("Error updating card", error);
     }

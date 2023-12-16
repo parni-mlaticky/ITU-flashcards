@@ -7,6 +7,7 @@ import ArticlesScreen from "./screens/ArticlesScreen";
 import DeckDetailScreen from "./screens/DeckDetailScreen";
 import DeckCreateScreen from "./screens/DeckCreateScreen";
 import DeckEditScreen from "./screens/DeckEditScreen";
+import DeckLearnScreen from "./screens/DeckLearnScreen";
 import GroupsScreen from "./screens/GroupsScreen";
 import GroupDetailsScreen from "./screens/GroupDetailsScreen";
 import GroupCreateScreen from "./screens/GroupCreateScreen";
@@ -157,6 +158,7 @@ export default function App() {
               <Stack.Screen name="DeckDetail" component={DeckDetailScreen} />
               <Stack.Screen name="DeckCreate" component={DeckCreateScreen} />
               <Stack.Screen name="DeckEdit" component={DeckEditScreen} />
+              <Stack.Screen name="DeckLearn" component={DeckLearnScreen} />
               <Stack.Screen name="CardDetail" component={CardDetailScreen} />
               <Stack.Screen name="CardCreate" component={CardCreateScreen} />
               <Stack.Screen name="CardEdit" component={CardEditScreen} />
