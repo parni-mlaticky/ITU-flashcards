@@ -44,7 +44,7 @@ router.put("/:id", wrapped(async (req, res) => {
 router.delete("/:id", wrapped(async (req, res) => {
     const group = await groupModel.getById(req.params.id);
     await group.delete();
-    res.status(200, "Group deleted successfully");
+    res.status(200, "Group deleted successfully").json(group);
 }));
 
 // Join a particular user to a particualr group
@@ -64,6 +64,13 @@ router.post("/:id/join", wrapped(async (req, res) => {
         await group.addUser(req.body.user_id);
         res.status(200).json(group);
     }
+}));
+
+// Remove a particular user's group membership from a particular group
+router.post("/:id/leave", wrapped(async (req, res) => {
+    const group = await groupModel.getById(req.params.id);
+    await group.removeUser(req.body.user_id);
+    res.status(200, "User removed from group succesfully.").json({status: "ok"});
 }));
 
 // Chat for all members of the group
