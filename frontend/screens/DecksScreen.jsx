@@ -44,7 +44,7 @@ const DecksScreen = ({ navigation }) => {
         rounded="lg"
         shadow="5"
         width="90%"
-        maxWidth="400px" // Limit the maximum width for larger screens
+        maxWidth="400px"
       >
         <Text fontSize="lg" bold mb="2">
           {item.name}
