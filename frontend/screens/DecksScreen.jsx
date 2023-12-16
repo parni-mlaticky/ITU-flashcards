@@ -4,10 +4,6 @@ import { VStack, Box, Center, Heading, Text, Fab, Icon } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import BASE_URL from "../url";
-
-axios.defaults.baseURL = BASE_URL;
-
 const DecksScreen = ({ navigation }) => {
   const [decks, setDecks] = React.useState([]);
   const [isFabVisible, setIsFabVisible] = useState(true);

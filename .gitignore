@@ -1,2 +1,4 @@
 node_modules
 backend/objects/main.js
+frontend/yarn.lock
+frontend/.expo
