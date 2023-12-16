@@ -11,10 +11,6 @@ import {
 } from "native-base";
 import axios from "axios";
 
-import BASE_URL from "../url";
-
-axios.defaults.baseURL = BASE_URL;
-
 const DeckEditScreen = ({ route, navigation }) => {
   const { deckId } = route.params;
   const [deck, setDeck] = useState({ name: "", description: "" });

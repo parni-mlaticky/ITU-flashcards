@@ -149,6 +149,8 @@ alter table GroupMessage add constraint fk_group_message_group_id foreign key (g
 alter table GroupMessage add constraint fk_group_message_user_id foreign key (user_id) references RegisteredUser(id) on delete cascade;
 
 
+insert into Article (heading, content, source_link, cover_image_link) values ('Zmizely miliardy i exmanažer Wirecardu. Podezírají ho ze špionáže pro Rusko', 'Jeden z nejhledanějších lidí na seznamu Interpolu, nyní třiačtyřicetiletý Marsalek, je už déle obviněný z krádeže stovek milionů dolarů od investorů. Podle nových informací však už jako manažer Wirecard i později jako hledaný zločinec finančně podporoval ruské špionážní aktivity a fungoval jako prostředník mezi ruskou zahraniční rozvědkou SVR, vojenskou rozvědkou GRU a sítí agentů v evropských zemích.', 'https://www.idnes.cz/zpravy/zahranicni/rusko-nemecko-rakousko-manazer-jan-marsalek-cech-podvod-spionaz-agent.A231215_140726_zahranicni_dtt' , 'https://1gr.cz/fotky/idnes/23/122/cl8h/DTT78e0b6b825_profimedia_0789992328.jpg');
+
 
 -- DELETING
 ALTER TABLE CustomTranslation DROP FOREIGN KEY fk_translation_article_id;

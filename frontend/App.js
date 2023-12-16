@@ -16,6 +16,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import axios from "axios";
 import Icon from "react-native-vector-icons/Ionicons";
 import BASE_URL from "./url";
+import ArticleDetailScreen from "./screens/ArticleDetailScreen";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -132,6 +133,8 @@ export default function App() {
         <Tab.Screen name="Groups" component={GroupsScreen} />
         <Tab.Screen name="Articles" component={ArticlesScreen} />
       </Tab.Navigator>
+
+
     );
   }
 
@@ -151,6 +154,7 @@ export default function App() {
               <Stack.Screen name="DeckDetail" component={DeckDetailScreen} />
               <Stack.Screen name="DeckCreate" component={DeckCreateScreen} />
               <Stack.Screen name="DeckEdit" component={DeckEditScreen} />
+              <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
             </>
           ) : (
             <>

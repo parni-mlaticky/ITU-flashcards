@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import { ScrollView, Box, Center, Heading, Text } from "native-base";
 import axios from "axios";
 
-import BASE_URL from "../url";
-
-axios.defaults.baseURL = BASE_URL;
-
 const DeckDetailScreen = ({ route }) => {
   const { deckId } = route.params;
   const [deck, setDeck] = useState(null);

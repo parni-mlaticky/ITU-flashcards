@@ -1,15 +1,87 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { VStack, Box, Center, Heading, Text } from "native-base";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import {
+  VStack,
+  Box,
+  Text,
+  Image,
+  View,
+  Center,
+  Heading,
+  Button,
+  FormControl,
+} from "native-base";
+import { Keyboard } from "react-native";
+import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/CustomButton";
+import ArticlePreview from "../components/ArticlePreview";
+import SelectionOverlay from "../components/SelectionOverlay";
 
 const ArticlesScreen = ({ navigation }) => {
+    const [data, setData] = useState(null);
+    useEffect(() => {
+        const fetchArticles = async () => {
+          try {
+            const response = await axios.get("/articles");
+            setData(response.data);
+          } catch (error) {
+            console.error("Error fetching articles", error);
+          }
+         
+    };
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("fetching");
+      fetchArticles();
+    });
+      fetchArticles();
+      return unsubscribe;
+    }, [navigation]);
+
+    const [selection, setSelection] = useState([]);
+
+    const handleSelect = (selection, article) => {
+      setSelection([selection, article]);
+      console.log(selection)
+    }
+
+    const unselect = () => {
+      console.log("unselecting");
+      setSelection([]);
+    }
+
+    const handleOpenArticle = (article) => {
+      navigation.navigate("ArticleDetail", article);
+      console.log("open article pressed");
+    }
+
+    const handleAddToDeck = () => {
+      console.log("add to deck pressed");
+    }
+
   return (
-    <Center flex={1} px="3">
-      <VStack space={4} alignItems="center">
-        <Heading size="lg">Articles</Heading>
-        <Text>Coming soon...</Text>
-      </VStack>
-    </Center>
+    <Box flex={1} px={3} bg="coolGray.50">
+      <Box safeArea p="4" py="0" w="100%" maxW="400">
+        {
+          data ? (
+            <VStack space={3} mt="5">
+              <View>
+                {data.map((article) => {
+                  return (
+                    <Box>
+                      <ArticlePreview unselectCallback={unselect} previewSelectHandler={handleSelect} key={article.id} article={article} openArticleCallback={handleOpenArticle} />
+                      { selection.length && selection[1].id === article.id ? <SelectionOverlay selection={selection} closeCallback={() => setSelection([])} /> : null }
+                    </Box>
+                  );
+                })}
+              </View>
+            </VStack>
+          ) :
+          (<Text>Loading...</Text>)
+        }
+      </Box>
+    </Box>
   );
 };
 

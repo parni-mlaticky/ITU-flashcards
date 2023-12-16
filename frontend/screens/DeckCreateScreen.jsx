@@ -3,10 +3,6 @@ import { Button, FormControl, Input, Center, VStack, Text } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import BASE_URL from "../url";
-
-axios.defaults.baseURL = BASE_URL;
-
 const DeckCreateScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
