@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
   ScrollView,
-  Box,
   Button,
   FormControl,
   Input,
+  Flex,
   Center,
   VStack,
   Text,

@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  FormControl,
-  Input,
-  Center,
-  VStack,
-  Heading,
-} from "native-base";
+import { Button, FormControl, Input, Flex, VStack, Heading } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -41,7 +34,7 @@ const DeckCreateScreen = ({ navigation, route }) => {
   };
 
   return (
-    <Center flex={1} px={4} bg="blueGray.100">
+    <Flex flex={1} px={4} bg="blueGray.100" mt={5} alignItems={"center"}>
       <Heading color="emerald.500" fontSize="xl" mb={6}>
         Create New Deck
       </Heading>
@@ -80,7 +73,7 @@ const DeckCreateScreen = ({ navigation, route }) => {
           Create Deck
         </Button>
       </VStack>
-    </Center>
+    </Flex>
   );
 };
 
