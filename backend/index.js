@@ -12,6 +12,7 @@ require("dotenv").config();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/public", express.static(__dirname + "/public"));
+app.use("/uploads", express.static("public/uploads"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(methodOverride("_method"));

@@ -4,6 +4,23 @@ const constants = require("../constants");
 const FlashcardDeck = require("../objects/FlashcardDeck");
 const Flashcard = require("../objects/Flashcard");
 const wrapped = require("./errorWrapper");
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads"); // The path to where the file will be saved
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname),
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Returns a list of all user's decks
 router.get(
@@ -69,6 +86,7 @@ router.get(
   "/:deckId/cards/:cardId",
   wrapped(async (req, res) => {
     const card = await Flashcard.getById(req.params.cardId);
+
     res.status(200).json(card);
   }),
 );
@@ -76,9 +94,16 @@ router.get(
 // Create a card
 router.post(
   "/:deckId/cards",
+  upload.single("image"),
   wrapped(async (req, res) => {
     const id = null;
     req.body.deck_id = req.params.deckId;
+
+    if (req.file) {
+      const imagePath = req.file.path.replace(/\\/g, "/");
+      req.body.image = imagePath;
+    }
+
     let card = new Flashcard({ id, ...req.body });
     card = await card.save();
     res.status(200).json(card);

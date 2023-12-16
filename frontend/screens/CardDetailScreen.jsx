@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Box, Center, Heading, Text, Button } from "native-base";
+import {
+  ScrollView,
+  Box,
+  Center,
+  Heading,
+  Text,
+  Button,
+  Image,
+} from "native-base";
 import axios from "axios";
 import { useFocusEffect } from "@react-navigation/native";
 import { useIsFocused } from "@react-navigation/native";
+import BASE_URL from "../url";
 
 const CardDetailScreen = ({ route, navigation }) => {
   const { cardId, deckId } = route.params;
@@ -16,7 +25,8 @@ const CardDetailScreen = ({ route, navigation }) => {
       setIsLoading(true);
       const fetchCard = async () => {
         try {
-          const response = await axios.get(`/decks/${deckId}/cards/${cardId}`);
+          let response = await axios.get(`/decks/${deckId}/cards/${cardId}`);
+          response.data.image = BASE_URL + response.data.image;
           setCard(response.data);
         } catch (err) {
           setError("Error fetching card details");
@@ -72,7 +82,7 @@ const CardDetailScreen = ({ route, navigation }) => {
             <Text mb="2">Front: {card.front}</Text>
             <Text mb="4">Back: {card.back}</Text>
             {card.image && (
-              <Image source={{ uri: card.image }} alt="Flashcard Image" />
+              <Image source={{ uri: card.image }} alt="Card Image" size="md" />
             )}
             <Button onPress={handleEditPress} colorScheme="blue">
               Edit Card
