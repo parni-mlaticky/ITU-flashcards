@@ -40,7 +40,7 @@ router.put(
   "/:deckId",
   wrapped(async (req, res) => {
     const id = req.params.deckId;
-    const deck = FlashcardDeck({ id, ...req.body });
+    let deck = new FlashcardDeck({ id, ...req.body });
     deck = await deck.save();
     res.status(200).json(deck);
   }),
@@ -50,9 +50,9 @@ router.put(
 router.delete(
   "/:deckId",
   wrapped(async (req, res) => {
-    const deck = await FlashcardDeck.getById(req.params.id);
-    deck.delete();
-    res.status(200, "Deck deleted successfully");
+    const deck = await FlashcardDeck.getById(req.params.deckId);
+    await deck.delete();
+    return res.status(204).send({});
   }),
 );
 

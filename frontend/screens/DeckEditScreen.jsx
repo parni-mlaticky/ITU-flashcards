@@ -36,7 +36,7 @@ const DeckEditScreen = ({ route, navigation }) => {
   const handleUpdateDeck = async () => {
     try {
       await axios.put(`/decks/${deckId}`, deck);
-      navigation.goBack();
+      navigation.navigate("DeckDetail", { deckId: deckId });
     } catch (err) {
       setError("Error updating deck");
       console.error(err);

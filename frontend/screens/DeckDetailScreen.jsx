@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Box, Center, Heading, Text } from "native-base";
+import { ScrollView, Box, Center, Heading, Text, Button } from "native-base";
 import axios from "axios";
+import { useFocusEffect } from "@react-navigation/native";
 
-const DeckDetailScreen = ({ route }) => {
+const DeckDetailScreen = ({ route, navigation }) => {
   const { deckId } = route.params;
   const [deck, setDeck] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchDeck = async () => {
-      try {
-        const response = await axios.get(`/decks/${deckId}`);
-        setDeck(response.data);
-      } catch (err) {
-        setError("Error fetching deck details");
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      const fetchDeck = async () => {
+        try {
+          const response = await axios.get(`/decks/${deckId}`);
+          setDeck(response.data);
+        } catch (err) {
+          setError("Error fetching deck details");
+          console.error(err);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-    fetchDeck();
-  }, [deckId]);
-
+      fetchDeck();
+      return () => {};
+    }, [deckId]),
+  );
   if (isLoading) {
     return (
       <Center>
@@ -40,13 +44,34 @@ const DeckDetailScreen = ({ route }) => {
     );
   }
 
+  const handleEditPress = () => {
+    navigation.navigate("DeckEdit", { deckId: deckId });
+  };
+
+  const handleDeletePress = async () => {
+    try {
+      const id = Number(deckId);
+      const response = await axios.delete(`/decks/${id}`);
+      navigation.navigate("Decks");
+    } catch (err) {
+      setError("Error deleting deck");
+      console.error(err);
+    }
+  };
+
   return (
     <ScrollView>
       <Box safeArea p="2">
         {deck ? (
           <>
             <Heading>{deck.name}</Heading>
-            <Text>{deck.description}</Text>
+            <Text mb="4">{deck.description}</Text>
+            <Button onPress={handleEditPress} colorScheme="blue">
+              Edit Deck
+            </Button>
+            <Button onPress={handleDeletePress} colorScheme="red" mt={4}>
+              Delete Deck
+            </Button>
           </>
         ) : (
           <Center>
