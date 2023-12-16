@@ -10,6 +10,9 @@ import DeckEditScreen from "./screens/DeckEditScreen";
 import GroupsScreen from "./screens/GroupsScreen";
 import GroupDetailsScreen from "./screens/GroupDetailsScreen";
 import GroupCreateScreen from "./screens/GroupCreateScreen";
+import CardDetailScreen from "./screens/CardDetailScreen";
+import CardCreateScreen from "./screens/CardCreateScreen";
+import CardEditScreen from "./screens/CardEditScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState, useEffect } from "react";
@@ -135,8 +138,6 @@ export default function App() {
         <Tab.Screen name="Groups" component={GroupsScreen} />
         <Tab.Screen name="Articles" component={ArticlesScreen} />
       </Tab.Navigator>
-
-
     );
   }
 
@@ -156,9 +157,18 @@ export default function App() {
               <Stack.Screen name="DeckDetail" component={DeckDetailScreen} />
               <Stack.Screen name="DeckCreate" component={DeckCreateScreen} />
               <Stack.Screen name="DeckEdit" component={DeckEditScreen} />
-              <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
+              <Stack.Screen name="CardDetail" component={CardDetailScreen} />
+              <Stack.Screen name="CardCreate" component={CardCreateScreen} />
+              <Stack.Screen name="CardEdit" component={CardEditScreen} />
+              <Stack.Screen
+                name="ArticleDetail"
+                component={ArticleDetailScreen}
+              />
               <Stack.Screen name="GroupCreate" component={GroupCreateScreen} />
-              <Stack.Screen name="GroupDetails" component={GroupDetailsScreen} />
+              <Stack.Screen
+                name="GroupDetails"
+                component={GroupDetailsScreen}
+              />
             </>
           ) : (
             <>

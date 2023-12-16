@@ -9,7 +9,6 @@ const wrapped = require("./errorWrapper");
 router.get(
   "/",
   wrapped(async (req, res) => {
-    console.log(req.user);
     const decks = await FlashcardDeck.getAllByAuthor(req.user.id);
     res.status(200).json(decks);
   }, "Error getting decks"),
@@ -60,8 +59,17 @@ router.delete(
 router.get(
   "/:deckId/cards",
   wrapped(async (req, res) => {
-    const cards = await Flashcard.getAllInDeck(req.params.id);
+    const cards = await Flashcard.getAllInDeck(req.params.deckId);
     res.status(200).json(cards);
+  }),
+);
+
+// Get a particular card
+router.get(
+  "/:deckId/cards/:cardId",
+  wrapped(async (req, res) => {
+    const card = await Flashcard.getById(req.params.cardId);
+    res.status(200).json(card);
   }),
 );
 
@@ -70,7 +78,8 @@ router.post(
   "/:deckId/cards",
   wrapped(async (req, res) => {
     const id = null;
-    const card = Flashcard({ id, ...req.body });
+    req.body.deck_id = req.params.deckId;
+    let card = new Flashcard({ id, ...req.body });
     card = await card.save();
     res.status(200).json(card);
   }),
@@ -81,7 +90,8 @@ router.put(
   "/:deckId/cards/:cardId",
   wrapped(async (req, res) => {
     const id = req.params.cardId;
-    const card = Flashcard({ id, ...req.body });
+    req.body.deck_id = req.params.deckId;
+    let card = new Flashcard({ id, ...req.body });
     card = card.save();
     res.status(200).json(card);
   }),
@@ -93,7 +103,7 @@ router.delete(
   wrapped(async (req, res) => {
     const card = await Flashcard.getById(req.params.cardId);
     card.delete();
-    res.status(200, "Card deleted successfully");
+    res.status(200).send({});
   }),
 );
 
