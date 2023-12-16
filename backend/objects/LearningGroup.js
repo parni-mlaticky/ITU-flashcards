@@ -3,6 +3,7 @@ const GroupMessage = require("./GroupMessage");
 const LearningGroupMember = require("./LearningGroupMember");
 const RegisteredUser = require("./RegisteredUser");
 const Test = require("./Test");
+const db = require("../database");
 
 class LearningGroup extends ORMBase {
   static table_name ="LearningGroup";
@@ -37,13 +38,19 @@ class LearningGroup extends ORMBase {
   }
 
   async removeUser(user_id) {
-    const member = await LearningGroupMember.getByGroupIdAndUserId(this.id, user_id);
+    const member = await LearningGroupMember.getMembersByGroupIdAndUserId(this.id, user_id);
     await member.delete();
   }
 
   static async postMessage(group_id, user_id, text) {
     const message = new GroupMessage({ group_id, user_id, text });
     await message.save();
+  }
+
+  static async getGroupsByUserId(user_id) {
+    const query = `SELECT *, l.id AS id FROM LearningGroupMember m RIGHT JOIN ${this.name} l ON m.group_id = l.id WHERE m.user_id = ? OR l.lector_id = ?`;
+    const [rows] = await db.query(query, [user_id, user_id]);
+    return rows.map(entry => new this(entry));
   }
 }
 

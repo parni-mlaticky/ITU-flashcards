@@ -10,6 +10,8 @@ import DeckEditScreen from "./screens/DeckEditScreen";
 import GroupsScreen from "./screens/GroupsScreen";
 import GroupDetailsScreen from "./screens/GroupDetailsScreen";
 import GroupCreateScreen from "./screens/GroupCreateScreen";
+import GroupUserListScreen from "./screens/GroupUserListScreen";
+import GroupMarketScreen from "./screens/GroupsMarketScreen";
 import CardDetailScreen from "./screens/CardDetailScreen";
 import CardCreateScreen from "./screens/CardCreateScreen";
 import CardEditScreen from "./screens/CardEditScreen";
@@ -165,6 +167,8 @@ export default function App() {
                 component={ArticleDetailScreen}
               />
               <Stack.Screen name="GroupCreate" component={GroupCreateScreen} />
+              <Stack.Screen name="GroupUserList" component={GroupUserListScreen}/>
+              <Stack.Screen name="GroupMarket" component={GroupMarketScreen}/>
               <Stack.Screen
                 name="GroupDetails"
                 component={GroupDetailsScreen}
