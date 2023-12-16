@@ -2,6 +2,6 @@ node_modules
 backend/objects/main.js
 frontend/yarn.lock
 frontend/.expo
-backend/public/uploads/.*
+backend/public/uploads
 backend/.env
 frontend/.env
