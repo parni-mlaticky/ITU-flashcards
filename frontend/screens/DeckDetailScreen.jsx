@@ -171,7 +171,7 @@ const DeckDetailScreen = ({ route, navigation }) => {
               size="sm"
               icon={<Ionicons name="add" size={20} color="white" />}
               onPress={() => navigation.navigate("CardCreate", { deckId })}
-              style={{ bottom: 60, right: 15 }}
+              style={{ bottom: 75, right: 15 }}
               colorScheme="emerald"
             />
           )}

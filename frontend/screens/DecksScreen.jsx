@@ -80,7 +80,7 @@ const DecksScreen = ({ navigation }) => {
           size="sm"
           icon={<Ionicons name="add" size={24} color="white" />}
           onPress={() => navigation.navigate("DeckCreate", { setRefresh })}
-          style={{ marginBottom: 50, marginRight: 30 }}
+          style={{ marginBottom: 65, marginRight: 30 }}
           colorScheme="emerald"
         />
       )}
