@@ -10,6 +10,15 @@ class RegisteredUser extends ORMBase {
     this.password = password;
   }
 
+  static async getUsernameById(id){
+    const query = "SELECT username FROM RegisteredUser WHERE id = ?";
+    const [rows] = await db.query(query, [id]);
+    if (rows.length == 0) {
+      return null;
+    }
+    return rows[0].username;
+  }
+
   static getByUsername = async (username) => {
     const query = "SELECT * FROM RegisteredUser WHERE username = ?";
     const [rows] = await db.query(query, [username]);

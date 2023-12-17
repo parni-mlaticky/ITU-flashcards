@@ -26,6 +26,10 @@ import axios from "axios";
 import Icon from "react-native-vector-icons/Ionicons";
 import BASE_URL from "./url";
 import ArticleDetailScreen from "./screens/ArticleDetailScreen";
+import CreateTranslationScreen from "./screens/CreateTranslationScreen";
+import SelectionOverlay from "./components/SelectionOverlay";
+import CardFromArticleWordScreen from "./screens/CardFromArticleWordScreen";
+import DeckSelectScreen from "./screens/DeckSelectScreen";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -168,10 +172,6 @@ export default function App() {
               <Stack.Screen name="CardDetail" component={CardDetailScreen} />
               <Stack.Screen name="CardCreate" component={CardCreateScreen} />
               <Stack.Screen name="CardEdit" component={CardEditScreen} />
-              <Stack.Screen
-                name="ArticleDetail"
-                component={ArticleDetailScreen}
-              />
               <Stack.Screen name="GroupCreate" component={GroupCreateScreen} />
               <Stack.Screen name="GroupUserList" component={GroupUserListScreen}/>
               <Stack.Screen name="GroupMarket" component={GroupMarketScreen}/>
@@ -179,6 +179,11 @@ export default function App() {
                 name="GroupDetails"
                 component={GroupDetailsScreen}
               />
+              <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
+              <Stack.Screen name="CreateTranslation" component={CreateTranslationScreen}/>
+              <Stack.Screen name="SelectionMenu" component={SelectionOverlay}/>
+              <Stack.Screen name="AddCardToDeck" component={CardFromArticleWordScreen}/>
+              <Stack.Screen name="DeckSelect" component={DeckSelectScreen}/>
             </>
           ) : (
             <>
