@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Button, FormControl, Input, Flex, VStack, Heading } from "native-base";
+import {
+  Button,
+  FormControl,
+  Input,
+  Flex,
+  VStack,
+  Heading,
+  HStack,
+  Text,
+  Switch,
+} from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DeckCreateScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [isShared, setIsShared] = useState(false);
   const { setRefresh } = route.params;
 
   const handleCreateDeck = async () => {
@@ -18,6 +29,7 @@ const DeckCreateScreen = ({ navigation, route }) => {
           author_id,
           name,
           description,
+          isShared,
         },
         {
           headers: {
@@ -65,6 +77,14 @@ const DeckCreateScreen = ({ navigation, route }) => {
             numberOfLines={4}
           />
         </FormControl>
+        <HStack alignItems="center" space={2}>
+          <Text>Share on Marketplace:</Text>
+          <Switch
+            isChecked={isShared}
+            onToggle={() => setIsShared(!isShared)}
+            colorScheme="emerald"
+          />
+        </HStack>
         <Button
           colorScheme="emerald"
           onPress={handleCreateDeck}

@@ -3,10 +3,9 @@ import { FlatList, Pressable } from "react-native";
 import { Box, Center, Heading, Text, Fab, ScrollView } from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 
-const DecksScreen = ({ navigation }) => {
+const MarketplaceScreen = ({ navigation }) => {
   const [decks, setDecks] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
@@ -15,7 +14,7 @@ const DecksScreen = ({ navigation }) => {
     const fetchDecks = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
-        const response = await axios.get("/decks", {
+        const response = await axios.get("/marketplace", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,7 +35,7 @@ const DecksScreen = ({ navigation }) => {
       onPress={() =>
         navigation.navigate("DeckDetail", {
           deckId: item.id,
-          isMarketplace: false,
+          isMarketplace: true,
         })
       }
     >
@@ -66,26 +65,16 @@ const DecksScreen = ({ navigation }) => {
   return (
     <Center flex={1} bg="coolGray.50">
       <Heading size="xl" fontWeight="600" color="coolGray.800" p="4">
-        Your Decks
+        Marketplace Decks
       </Heading>
       <FlatList
         data={decks}
         renderItem={renderDeck}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ alignItems: "center" }}
       />
-      {isFocused && (
-        <Fab
-          position="absolute"
-          size="sm"
-          icon={<Ionicons name="add" size={24} color="white" />}
-          onPress={() => navigation.navigate("DeckCreate", { setRefresh })}
-          style={{ marginBottom: 50, marginRight: 30 }}
-          colorScheme="emerald"
-        />
-      )}
     </Center>
   );
 };
 
-export default DecksScreen;
+export default MarketplaceScreen;

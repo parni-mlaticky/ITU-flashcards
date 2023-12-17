@@ -14,6 +14,7 @@ import GroupCreateScreen from "./screens/GroupCreateScreen";
 import CardDetailScreen from "./screens/CardDetailScreen";
 import CardCreateScreen from "./screens/CardCreateScreen";
 import CardEditScreen from "./screens/CardEditScreen";
+import MarketplaceScreen from "./screens/MarketplaceScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState, useEffect } from "react";
@@ -114,6 +115,8 @@ export default function App() {
             let iconName;
             if (route.name === "Decks") {
               iconName = focused ? "home" : "home-outline";
+            } else if (route.name === "Marketplace") {
+              iconName = focused ? "ios-cart" : "ios-cart-outline";
             } else if (route.name === "Groups") {
               iconName = focused ? "ios-people" : "ios-people-outline";
             } else if (route.name === "Articles") {
@@ -136,6 +139,7 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Decks" component={DecksScreen} />
+        <Tab.Screen name="Marketplace" component={MarketplaceScreen} />
         <Tab.Screen name="Groups" component={GroupsScreen} />
         <Tab.Screen name="Articles" component={ArticlesScreen} />
       </Tab.Navigator>

@@ -10,13 +10,15 @@ import {
   Image,
   VStack,
   useTheme,
+  View,
 } from "native-base";
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DeckDetailScreen = ({ route, navigation }) => {
-  const { deckId } = route.params;
+  const { deckId, isMarketplace } = route.params;
   const [deck, setDeck] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,9 +31,14 @@ const DeckDetailScreen = ({ route, navigation }) => {
       const fetchData = async () => {
         setIsLoading(true);
         try {
-          const responseDeck = await axios.get(`/decks/${deckId}`);
+          const token = await AsyncStorage.getItem("token");
+          const responseDeck = await axios.get(`/decks/${deckId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           setDeck(responseDeck.data);
-          const responseCards = await axios.get(`/decks/${deckId}/cards`);
+          const responseCards = await axios.get(`/decks/${deckId}/cards`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           setCards(responseCards.data);
         } catch (err) {
           setError("Error fetching data");
@@ -54,6 +61,25 @@ const DeckDetailScreen = ({ route, navigation }) => {
       navigation.navigate("Decks");
     } catch (err) {
       setError("Error deleting deck");
+      console.error(err);
+    }
+  };
+
+  const handleAddToDecks = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      await axios.post(
+        `/decks/${deckId}/copy`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      navigation.navigate("Decks");
+    } catch (err) {
+      setError("Error adding deck");
       console.error(err);
     }
   };
@@ -115,19 +141,31 @@ const DeckDetailScreen = ({ route, navigation }) => {
           >
             Learn Deck
           </Button>
-          <Button onPress={handleEditPress} colorScheme="blue" mb={2}>
-            Edit Deck
-          </Button>
-          <Button onPress={handleDeletePress} colorScheme="red" mb={4}>
-            Delete Deck
-          </Button>
+          {!isMarketplace && (
+            <View key={"nonMarketPlace"}>
+              <Button onPress={handleEditPress} colorScheme="blue" mb={2}>
+                Edit Deck
+              </Button>
+              <Button onPress={handleDeletePress} colorScheme="red" mb={4}>
+                Delete Deck
+              </Button>
+            </View>
+          )}
+          {isMarketplace && (
+            <View key={"marketplace"}>
+              <Button onPress={handleAddToDecks} colorScheme="emerald" mb={3}>
+                Add to Decks
+              </Button>
+            </View>
+          )}
           <FlatList
             data={cards}
             renderItem={renderCard}
             keyExtractor={(item) => item.id.toString()}
+            key={deckId}
             numColumns={2}
           />
-          {isFocused && (
+          {!isMarketplace && isFocused && (
             <Fab
               position="absolute"
               size="sm"

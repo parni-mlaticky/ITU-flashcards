@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const constants = require("../constants");
 const FlashcardDeck = require("../objects/FlashcardDeck");
 const Flashcard = require("../objects/Flashcard");
 const wrapped = require("./errorWrapper");
@@ -35,9 +34,15 @@ router.get(
 router.post(
   "/",
   wrapped(async (req, res) => {
-    const { author_id, name, description } = req.body;
+    const { author_id, name, description, isShared } = req.body;
     let id = null;
-    let deck = new FlashcardDeck({ id, author_id, name, description });
+    let deck = new FlashcardDeck({
+      id,
+      author_id,
+      name,
+      description,
+      is_shared: isShared,
+    });
     deck = await deck.save();
     res.status(200).json(deck);
   }),
@@ -48,6 +53,41 @@ router.get(
   wrapped(async (req, res) => {
     const deck = await FlashcardDeck.getById(req.params.deckId);
     res.status(200).json(deck);
+  }),
+);
+
+router.post(
+  "/:deckId/copy",
+  wrapped(async (req, res) => {
+    try {
+      const originalDeckId = req.params.deckId;
+      const userId = req.user.id;
+
+      const originalDeck = await FlashcardDeck.getById(originalDeckId);
+      const originalCards = await Flashcard.getAllInDeck(originalDeckId);
+
+      const newDeck = new FlashcardDeck({
+        author_id: userId,
+        name: originalDeck.name,
+        description: originalDeck.description,
+        is_shared: false,
+      });
+      await newDeck.save();
+
+      for (const card of originalCards) {
+        const newCard = new Flashcard({
+          deck_id: newDeck.id,
+          front: card.front,
+          back: card.back,
+          image: card.image,
+        });
+        await newCard.save();
+      }
+      res.status(200).json(newDeck);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Error copying deck");
+    }
   }),
 );
 
