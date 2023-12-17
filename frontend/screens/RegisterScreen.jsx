@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: RegisterScreen.jsx
+ *  @brief: Screen for registering a user
+ */
 import React from "react";
 import { useState } from "react";
 import axios from "axios";

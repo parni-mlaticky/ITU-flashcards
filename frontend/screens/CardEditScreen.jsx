@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: EditCardScreen.jsx
+ *  @brief: Screen for editing a card
+ */
 import React, { useState, useEffect } from "react";
 import {
   Button,

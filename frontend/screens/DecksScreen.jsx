@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: DecksScreen.jsx
+ *  @brief: Screen for displaying all decks
+ */
 import React, { useState, useEffect } from "react";
 import { FlatList, Pressable } from "react-native";
 import { Box, Center, Heading, Text, Fab, ScrollView } from "native-base";

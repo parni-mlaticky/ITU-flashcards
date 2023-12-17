@@ -1,3 +1,10 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: auth.js
+ *  @brief: Authentication middleware
+ */
+
 const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {

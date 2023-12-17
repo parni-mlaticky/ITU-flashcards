@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: LoginScreen.jsx
+ *  @brief: Screen for logging in
+ */
 import React from "react";
 import { useState } from "react";
 import axios from "axios";

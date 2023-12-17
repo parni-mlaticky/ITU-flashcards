@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: DeckEditScreen.jsx
+ *  @brief: Screen for editing a deck
+ */
 import React, { useState, useEffect } from "react";
 import {
   ScrollView,

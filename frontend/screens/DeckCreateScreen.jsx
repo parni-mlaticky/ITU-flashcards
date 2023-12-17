@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: AuthMiddleware.jsx
+ *  @brief: Middleware for authentication
+ */
 import React, { useState } from "react";
 import {
   Button,
