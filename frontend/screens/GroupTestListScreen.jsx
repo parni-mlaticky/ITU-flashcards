@@ -58,8 +58,8 @@ const GroupsTestList = (navigation, { groupId }) => {
           <VStack bg={"#d4d9d6"} borderRadius="lg" p="15px">
             <Text fontSize="30" key={test.id}>{test.name}</Text>
             {
-              (test.questions == test.answers &&
-               <Text>Test Completed</Text>) || (test.answers == 0 && <Text>New</Text>) || <Text>{test.answers}/{test.questions} Questions Answered</Text>
+              userId != group.lector_id ? ((test.questions == test.answers &&
+                                            <Text>Test Completed</Text>) || (test.answers == 0 && <Text>New</Text>) || <Text>{test.answers}/{test.questions} Questions Answered</Text>) : <Box/>
             }
           </VStack>
           </Pressable>
