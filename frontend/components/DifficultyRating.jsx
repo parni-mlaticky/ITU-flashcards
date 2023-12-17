@@ -1,3 +1,8 @@
+/**
+ * @file Difficulty rating component, shown on the article details page. Allows users to rate the difficulty of an article.
+ * @author Vladimír Hucovič
+ */
+
 import axios from "axios";
 import {Text, Box, Center, Button, HStack} from "native-base"
 import { useEffect } from "react";

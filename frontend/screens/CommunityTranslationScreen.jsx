@@ -1,3 +1,8 @@
+/**
+ * @file Community translation screen, shown when user selects the "Check community translations" button in the selection overlay.
+ * @author Vladimír Hucovič
+ */
+
 import { Text, Box, HStack, Button } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'native-base'

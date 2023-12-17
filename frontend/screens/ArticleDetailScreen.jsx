@@ -1,3 +1,11 @@
+/**
+ * @file Article details screen, shown when user selects an article on the articles page.
+ * Allows users to view the article, view community translations, and rate the difficulty of the article.
+ * Users can also delete the article if they are the author of the article, or delete their translations of the article.
+ * Users can also view and post comments on the article.
+ * @author Vladimír Hucovič
+ */
+
 import { Box, Text, Center, Button, HStack, Drawer, KeyboardAvoidingView, VStack } from "native-base"
 import { Alert, Image, Linking, TextInput } from "react-native"
 import { useEffect, useState } from "react"

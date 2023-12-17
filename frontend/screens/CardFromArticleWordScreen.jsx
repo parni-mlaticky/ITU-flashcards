@@ -1,3 +1,8 @@
+/**
+ * @file Screen for creating a new card from a selection (like a word) in an article. Shown when user selects a word in an article and chooses to add it to a deck.
+ * @author Vladimír Hucovič
+ */
+
 import {useEffect, useState} from 'react';
 import { Box, Text, HStack, Button } from 'native-base';
 import axios from 'axios';

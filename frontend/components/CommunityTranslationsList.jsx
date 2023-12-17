@@ -1,3 +1,8 @@
+/**
+ * @file List of community translations for an article, shown on the article details page.
+ * @author Vladimír Hucovič
+ */
+
 import { useEffect, useState, useCallback} from 'react';
 import { Text } from 'react-native';
 import axios from 'axios';

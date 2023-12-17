@@ -1,3 +1,8 @@
+/**
+ * @file Create new article screen, shown when user selects the Create New Article tab in the bottom navigation bar.
+ * @author Vladimír Hucovič
+ */
+
 import { HStack, Box, Text, Button, Image } from "native-base";
 import { TouchableHighlight } from "react-native";
 import { StyleSheet, TextInput } from "react-native";

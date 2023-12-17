@@ -1,3 +1,8 @@
+/**
+ * @file Discussion component, shown on the article details page. Allows users to post comments and view comments from other users.
+ * @author Vladimír Hucovič
+ */
+
 import { Box, Text, KeyboardAvoidingView, ScrollView, Button } from 'native-base'
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'

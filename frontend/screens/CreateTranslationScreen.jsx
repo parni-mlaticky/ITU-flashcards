@@ -1,3 +1,9 @@
+/**
+ * @file Screen for creating a new translation for an article. Shown when user presses the "Create translation" button in the selection overlay.
+ * @author Vladimír Hucovič
+ */
+
+
 import { HStack, VStack, Box, Button } from 'native-base';
 import {useState} from 'react';
 import { Text, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';

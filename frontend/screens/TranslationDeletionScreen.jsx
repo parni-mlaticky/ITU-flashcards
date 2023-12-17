@@ -1,3 +1,8 @@
+/**
+ * @file Screen for deleting translations created by the user, shown when user selects "Delete translations" in the article details screen.
+ * @author Vladimír Hucovič
+ */
+
 import { View, TouchableHighlight } from 'react-native';
 import { Box, Button, HStack, ScrollView, Text } from 'native-base';
 import { useEffect, useState } from 'react';

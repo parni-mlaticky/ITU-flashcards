@@ -1,3 +1,9 @@
+/**
+ * @file Articles page, shown when user selects the Articles tab in the bottom navigation bar.
+ * Allows users to view articles and create new articles. Users can also see the average difficulty rating of each article.
+ * @author Vladimír Hucovič
+ */
+
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -43,7 +49,6 @@ const ArticlesScreen = ({ navigation, route }) => {
     };   
     
     const unsubscribe = navigation.addListener("focus", () => {
-      console.log("fetching");
       fetchArticles();
     });
     
@@ -57,20 +62,14 @@ const ArticlesScreen = ({ navigation, route }) => {
 
     const handleSelect = (selection, article) => {
       setSelection([selection, article]);
-      console.log(selection)
     }
 
     const unselect = () => {
-      console.log("unselecting");
       setSelection([]);
     }
 
     const handleOpenArticle = (article) => {
       navigation.navigate("ArticleDetail", article);
-    }
-
-    const handleAddToDeck = () => {
-      console.log("add to deck pressed");
     }
 
   return (

@@ -1,3 +1,8 @@
+/**
+ * @file Root of the app.
+ * @authors Petr Kolouch (login logic, navigation) Vladimír Hucovič, Ondřej Zobal (navigation)
+ */
+
 import React from "react";
 import { NativeBaseProvider, extendTheme, Button, Text } from "native-base";
 import RegisterScreen from "./screens/RegisterScreen";

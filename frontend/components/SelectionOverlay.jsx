@@ -1,3 +1,10 @@
+/**
+ * @file Selection overlay component, shown when user selects text in an article.
+ * Allows user to create a translation, add the selected text to a deck or check community translations for the selected text.
+ * User can also close the overlay.
+ * @author Vladimír Hucovič
+ */
+
 import { Box, Button, HStack, VStack } from 'native-base';
 import { useState } from 'react';
 
