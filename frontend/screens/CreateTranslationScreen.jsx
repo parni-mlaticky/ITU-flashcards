@@ -13,10 +13,6 @@ const CreateTranslationScreen = ({route, navigation}) => {
 
 
     const [translationText, setTranslationText] = useState(null);
-    /*if(!article || !selection){
-        console.log("NOT DEFINED ARITCLE OR SELECTION")
-        article = route.route.params
-    }*/
 
     const createTranslation = async () => {
         const userId = await AsyncStorage.getItem("user");
@@ -29,24 +25,6 @@ const CreateTranslationScreen = ({route, navigation}) => {
 
     const handleTextChange = (text) => {  
         setTranslationText(text);
-    }
-
-    const checkOverlappingTranslation = async (start, end) => {
-        const userId = await AsyncStorage.getItem("user");
-        const query = `/articles/${article.id}/translation/${userId}`;
-        const response = await axios.get(query);
-        if(!response) return false;
-        for(let translation of response.data){
-            if(translation.start_char_index < start && translation.end_char_index > start){
-                console.log("overlapping translation found");
-                return true;
-            }
-            if(translation.start_char_index < end && translation.end_char_index > end){
-                console.log("overlapping translation found");
-                return true;
-            }
-        }
-        console.log("conflict check response", response.data);
     }
 
     return (
@@ -98,15 +76,15 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     },
     inputContainer: {
-        width: '80%' // Adjust the width as needed
+        width: '80%'
     },
     textInput: {
         borderWidth: 1,
         borderColor: 'grey',
         borderRadius: 5,
         padding: 10,
-        minHeight: 40, // Adjust the height as needed
-        fontSize: 16 // Adjust the font size as needed
+        minHeight: 40,
+        fontSize: 16
     }
 });
 

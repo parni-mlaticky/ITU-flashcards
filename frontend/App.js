@@ -32,6 +32,9 @@ import CreateTranslationScreen from "./screens/CreateTranslationScreen";
 import SelectionOverlay from "./components/SelectionOverlay";
 import CardFromArticleWordScreen from "./screens/CardFromArticleWordScreen";
 import DeckSelectScreen from "./screens/DeckSelectScreen";
+import TranslationDeletionScreen from "./screens/TranslationDeletionScreen";
+import CommunityTranslationScreen from "./screens/CommunityTranslationScreen";
+import CreateNewArticleScreen from "./screens/CreateNewArticleScreen";
 
 
 axios.defaults.baseURL = BASE_URL;
@@ -181,11 +184,14 @@ export default function App() {
               <Stack.Screen name="GroupTestList" component={GroupTestListScreen} options={{ title: 'Tests' }} />
               <Stack.Screen name="GroupTestDetails" component={GroupTestDetailsScreen} options={{ title: 'Test' }} />
               <Stack.Screen name="GroupDetails" component={GroupDetailsScreen} options={{ title: 'Learning Group' }}/>
-              <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
-              <Stack.Screen name="CreateTranslation" component={CreateTranslationScreen}/>
-              <Stack.Screen name="SelectionMenu" component={SelectionOverlay}/>
-              <Stack.Screen name="AddCardToDeck" component={CardFromArticleWordScreen}/>
-              <Stack.Screen name="DeckSelect" component={DeckSelectScreen}/>
+              <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} options={{title: 'Article'}} />
+              <Stack.Screen name="CreateTranslation" component={CreateTranslationScreen} options={{title: 'Create a translation'}}/>
+              <Stack.Screen name="SelectionMenu" component={SelectionOverlay} options={{title: 'Selection menu'}}/>
+              <Stack.Screen name="AddCardToDeck" component={CardFromArticleWordScreen} options={{title: 'Add card to deck'}}/>
+              <Stack.Screen name="DeckSelect" component={DeckSelectScreen} options={{title: 'Select a deck'}}/>
+              <Stack.Screen name="DeleteTranslation" component={TranslationDeletionScreen} options={{title: 'Delete translations'}}/>
+              <Stack.Screen name="CommunityTranslationScreen" component={CommunityTranslationScreen} options={{title: 'Community Translations'}}/>
+              <Stack.Screen name="CreateNewArticleScreen" component={CreateNewArticleScreen} options={{title: 'Create an article'}}/>
             </>
           ) : (
             <>

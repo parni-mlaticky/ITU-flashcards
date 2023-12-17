@@ -25,6 +25,17 @@ class CustomTranslation extends ORMBase {
     return rows;
   }
 
+  static async getAllByArticleIdWithPositions(article_id) {
+    const query = `SELECT * FROM CustomTranslation WHERE article_id = ?`;
+    const [rows] = await db.query(query, [article_id]);
+
+    if (rows.length === 0) {
+        return null;
+    }
+
+    return rows;
+  }
+
   static async getAllByArticleId(article_id) {
     const query = `SELECT DISTINCT ct.author_id, ru.username FROM CustomTranslation ct JOIN RegisteredUser ru ON ct.author_id = ru.id  WHERE article_id = ? GROUP BY ct.author_id, ru.username;`;
     const [rows] = await db.query(query, [article_id]);

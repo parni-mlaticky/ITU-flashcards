@@ -1,4 +1,4 @@
-import { Box, Text, Center, Button, HStack } from "native-base"
+import { Box, Text, Center, Button, HStack, Drawer, KeyboardAvoidingView, VStack } from "native-base"
 import { Alert, Image, Linking, TextInput } from "react-native"
 import { useEffect, useState } from "react"
 import SelectionOverlay from "../components/SelectionOverlay"
@@ -9,10 +9,12 @@ import axios from "axios"
 import DifficultyRating from "../components/DifficultyRating"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useFocusEffect } from "@react-navigation/native"
+import DiscussionComponent from "../components/DiscussionComponent"
+import { StyleSheet } from "react-native"
 
 const ArticleDetailScreen = (article) => {
     const { navigation } = article;
-    let { id, heading, cover_image_link, content, source_link } = article.route.params;
+    let { id, heading, cover_image_link, content, source_link, author_id } = article.route.params;
 
     const [showTranslations, setShowTranslations] = useState(false);
     const [selection, setSelection] = useState([]);
@@ -20,12 +22,58 @@ const ArticleDetailScreen = (article) => {
     const [translationsForUser, setTranslationsForUser] = useState([]);
     const [translation, setTranslation] = useState(null);
     const [userHasTranslation, setUserHasTranslation] = useState(false);
+    const [authorName, setAuthorName] = useState(null);
+    const [userIsAuthor, setUserIsAuthor] = useState(false);
+
+
+
+    const getAuthorName = async () => {
+        if(!author_id) {
+            setAuthorName(null);
+            return;
+        }
+        try {
+            const response = await axios.get(`/users/name/${author_id}`);
+            setAuthorName(response.data.username);
+        } catch (error) {
+            console.error("Error fetching author name:", error);
+            setAuthorName(null);
+        }
+    };
+
+    const deleteArticle = () => {
+        Alert.alert(
+            "Deleting this article",
+            "Are you sure you want to delete this article?",
+            [
+                {
+                    text: "Yes",
+                    onPress: async () => {
+                        const response = await axios.delete(`/articles/${id}`);
+                        navigation.navigate("Articles");
+                    }
+                },
+                { text: "No", onPress: () => {} }
+            ],
+            { cancelable: true }
+        );
+    }
+
+    useEffect(() => {
+        if(!author_id) return;
+        const checkIfUserIsAuthor = async () => {
+            const userId = await AsyncStorage.getItem("user");
+            setUserIsAuthor(userId == author_id);
+        }
+        checkIfUserIsAuthor();
+        
+        getAuthorName();
+    }, [author_id])
 
     const checkIfUserHasTranslation = async () => {
         const userId = await AsyncStorage.getItem("user");
         const query = `/articles/${id}/translation/${userId}`;
         const response = await axios.get(query);
-        console.log("response", response.data);
         if(response.data) setUserHasTranslation(true);
         else setUserHasTranslation(false);
     }
@@ -43,28 +91,7 @@ const ArticleDetailScreen = (article) => {
 
 
     const deleteUserTranslations = async () => {
-        Alert.alert(
-            "Deleting your translations",
-            "Are you sure you want to delete your translations?",
-            [
-                {
-                    text: "Yes",
-                    onPress: async () => {
-                        const userId = await AsyncStorage.getItem("user");
-                        const query = `/articles/${id}/translation/delete`;
-                        try {
-                            await axios.post(query, {userId: userId});
-                            setUserHasTranslation(false);
-                            navigation.goBack();
-                        } catch (error) {
-                            console.error("Error deleting translation", error);
-                        }
-                    }
-                },
-                { text: "No", onPress: () => console.log("Deletion cancelled") }
-            ],
-            { cancelable: true }
-        );
+        navigation.navigate("DeleteTranslation", {article: article.route.params})
     };
 
 
@@ -74,32 +101,22 @@ const ArticleDetailScreen = (article) => {
 
     const selectionHandle = (event) => {
         handleSelect(event.nativeEvent.selection, article);
-        console.log(event.nativeEvent.selection);
     }
 
     const translationSelectCallback = async (translation) => {
-        // reload this article if no translation selected
         setTranslation(translation);
         if(!translation) {
-            console.log("no translation selected");
             setTranslatedContent(null);
             setTranslationsForUser([]);
             return;
         }
         const userId = translation.author_id
-        console.log("translation select callback", translation);
-        console.log("article", article.route.params.id)
-        console.log("user", userId)
         const response = await axios.get(`/articles/${article.route.params.id}/translation/${userId}`);
         const translationsForUser = response.data;
-        console.log("translations for user", translationsForUser)
 
-        // Sort translations based on start index
-        console.log("TRANS FOR USER", translationsForUser)
         translationsForUser.sort((a, b) => a.start_char_index - b.start_char_index);
-        console.log("SORTED", translationsForUser)
 
-        let offset = 0; // Tracks the shift in indices due to replacements
+        let offset = 0;
         let newArticleContent = content;
 
         for (let i = 0; i < translationsForUser.length; i++) {
@@ -109,14 +126,11 @@ const ArticleDetailScreen = (article) => {
             newArticleContent = newArticleContent.slice(0, startIndex) + newContent + newArticleContent.slice(endIndex);
             offset += newContent.length - (endIndex - startIndex);
         }
-        console.log("new content", newArticleContent);
         setTranslatedContent(newArticleContent);
         setTranslationsForUser(translationsForUser);
-
     }
 
     const showCommunityTranslations = () => {
-        console.log("showing translations");
         setShowTranslations(!showTranslations);
     }
 
@@ -148,18 +162,28 @@ const ArticleDetailScreen = (article) => {
         }
         return segments;
     };
-    
+
+    const getAuthorNameComponent = () => {
+        if(!authorName) return null;
+        return (
+        <VStack>
+            <Text alignSelf={"center"} style={{color:"blue"}}>Community-created article</Text>
+            <Text alignSelf={"center"}>Author: {authorName}</Text>
+        </VStack>
+        )
+    }
+
     return (
-        <>
-        <ScrollView>
-        <Center safeArea={5}>
+        <KeyboardAvoidingView style={{flex: 1}}>
+        <ScrollView width={"100%"}>
+        <Center width={"100%"} safeArea={5}>
             <Box>
                 <Text fontSize={30}>{heading}</Text>
             </Box>
             <Box alignItems="center">
-                <Image style={{margin:10}} source={{ uri: cover_image_link }} alt={heading} height={200} width={300}/>
+                <Image borderWidth={2} borderColor={"black"} borderRadius={10} style={{margin:10}} source={{ uri: cover_image_link }} alt={heading} height={200} width={300}/>
                 <HStack safeArea={2}>
-                    <Button margin={1} onPress={() => { Linking.openURL(source_link) }}>Open original article</Button>
+                    {authorName === null ? (<Button margin={1} onPress={() => { Linking.openURL(source_link) }}>Open original article</Button>) : getAuthorNameComponent()}
                     <Button margin={1} onPress={showCommunityTranslations} >See community translations</Button>
                 </HStack>
                 <CommunityTranslationsList translationSelectCallback={translationSelectCallback} article={article.route.params} show={showTranslations} />
@@ -170,10 +194,10 @@ const ArticleDetailScreen = (article) => {
                 </>
                 ) : null
                 }
-                
+                <Box style={{width: "100%"}} minH={20} backgroundColor={"lightgrey"}>
                 {
                     translatedContent ? (
-                        <Text style={{marginTop:5, marginBottom:10, lineHeight: 25}} alignItems="center" fontSize={16}>{
+                        <Text style={{marginTop:5, marginBottom:10, lineHeight: 25, padding:20}} alignItems="center" fontSize={16}>{
                         createContentSegments().map((segment, index) => (
                             <Text
                                 key={index}
@@ -187,17 +211,34 @@ const ArticleDetailScreen = (article) => {
                         </Text>
                     )
                     :
-                    <TextInput style={{marginTop:5, marginBottom:10, lineHeight: 25}} safeArea={3} scrollEnabled={false} onSelectionChange={selectionHandle} multiline editable={false} value={translatedContent || content} alignItems="center" fontSize={16}/>
-
+                    <TextInput
+                        style={{marginTop:5, marginBottom:10, lineHeight: 25, padding: 20}} 
+                        safeArea={3} scrollEnabled={false} onSelectionChange={selectionHandle}
+                        multiline editable={false} value={translatedContent || content} alignItems="center"
+                        fontSize={16}
+                    />
                 }
+                </Box>
             </Box>
         </Center>
         <DifficultyRating article={{id}}></DifficultyRating>
-        {userHasTranslation ?  <Box safeArea={10}><Button onPress={deleteUserTranslations} style={{backgroundColor:"red"}}>Delete my translations</Button></Box> : null}
+        {userIsAuthor && <Button margin={4} onPress={deleteArticle} style={{backgroundColor:"red"}}>Delete this article</Button>}
+        {userHasTranslation ?  <Box safeArea={4
+        }><Button onPress={deleteUserTranslations} style={{backgroundColor:"red"}}>Delete my translations</Button></Box> : null}
+        <DiscussionComponent article={article.route.params}/>
         </ScrollView>
         <SelectionOverlay navigation={navigation} selection={selection} closeCallback={() => {setSelection([])}} />
-        </>
+        </KeyboardAvoidingView>
     );
 };
+
+const styles = StyleSheet.create({
+    selectionOverlay: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+  });
 
 export default ArticleDetailScreen;

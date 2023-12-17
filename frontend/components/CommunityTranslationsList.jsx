@@ -53,7 +53,7 @@ const CommunityTranslationsList = ({ article, show, translationSelectCallback })
                                 <Text flex={1} textAlign="left" paddingLeft={1}>{"Author: " + translation.username}</Text>
                                 <HStack flex={1} justifyContent="flex-end">
                                     <Icon name="star" size={20} color="gold" />
-                                    <Text marginLeft={1}>Rating here</Text>
+                                    <Text marginLeft={1}></Text>
                                 </HStack>
                             </HStack>
                         </TouchableHighlight>

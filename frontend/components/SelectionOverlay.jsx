@@ -14,6 +14,7 @@ const SelectionOverlay = ({navigation, selection, closeCallback, position_proper
     }
 
     const checkCommunityTranslationsHandler = () => {
+        navigation.navigate("CommunityTranslationScreen", {selection: selection[0], article: selection[1].route.params})
         console.log("check community translations");
     }
 
