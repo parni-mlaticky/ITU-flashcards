@@ -5,6 +5,7 @@ import {
   Input,
   Center,
   VStack,
+  Flex,
   Image,
   Text,
 } from "native-base";
@@ -58,7 +59,7 @@ const EditCardScreen = ({ route, navigation }) => {
         },
       );
 
-      navigation.navigate("CardDetail", { cardId: cardId, deckId: deckId });
+      navigation.navigate("DeckDetail", { deckId: deckId });
     } catch (error) {
       console.error("Error updating card", error);
     }
@@ -81,7 +82,7 @@ const EditCardScreen = ({ route, navigation }) => {
   }
 
   return (
-    <Center flex={1} px={3} bg="coolGray.50">
+    <Flex flex={1} px={3} bg="coolGray.50" alignItems={"center"}>
       <VStack space={4} w="90%">
         <FormControl>
           <FormControl.Label>Front</FormControl.Label>
@@ -93,7 +94,7 @@ const EditCardScreen = ({ route, navigation }) => {
         </FormControl>
         <Button onPress={handleUpdateCard}>Update Card</Button>
       </VStack>
-    </Center>
+    </Flex>
   );
 };
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FlatList, Pressable, StyleSheet } from "react-native";
 import {
-  ScrollView,
-  FlatList,
   Box,
   Center,
   Heading,
@@ -9,30 +8,37 @@ import {
   Button,
   Fab,
   Image,
-  Pressable,
+  VStack,
+  useTheme,
+  View,
 } from "native-base";
 import axios from "axios";
-import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DeckDetailScreen = ({ route, navigation }) => {
-  const { deckId } = route.params;
+  const { deckId, isMarketplace } = route.params;
   const [deck, setDeck] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
+  const theme = useTheme();
 
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {
         setIsLoading(true);
         try {
-          const responseDeck = await axios.get(`/decks/${deckId}`);
+          const token = await AsyncStorage.getItem("token");
+          const responseDeck = await axios.get(`/decks/${deckId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           setDeck(responseDeck.data);
-          const responseCards = await axios.get(`/decks/${deckId}/cards`);
+          const responseCards = await axios.get(`/decks/${deckId}/cards`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           setCards(responseCards.data);
         } catch (err) {
           setError("Error fetching data");
@@ -45,17 +51,13 @@ const DeckDetailScreen = ({ route, navigation }) => {
       if (isFocused) {
         fetchData();
       }
-      return () => {};
-    }, [deckId, isFocused, refresh]),
+    }, [deckId, isFocused]),
   );
 
-  const handleEditPress = () => {
-    navigation.navigate("DeckEdit", { deckId: deckId });
-  };
-
+  const handleEditPress = () => navigation.navigate("DeckEdit", { deckId });
   const handleDeletePress = async () => {
     try {
-      const response = await axios.delete(`/decks/${deckId}`);
+      await axios.delete(`/decks/${deckId}`);
       navigation.navigate("Decks");
     } catch (err) {
       setError("Error deleting deck");
@@ -63,38 +65,54 @@ const DeckDetailScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleAddToDecks = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      await axios.post(
+        `/decks/${deckId}/copy`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      navigation.navigate("Decks");
+    } catch (err) {
+      setError("Error adding deck");
+      console.error(err);
+    }
+  };
+
   const renderCard = ({ item }) => (
     <Pressable
       onPress={() =>
-        navigation.navigate("CardDetail", { cardId: item.id, deckId: deckId })
+        navigation.navigate("CardDetail", { cardId: item.id, deckId })
       }
-      width="48%"
+      style={styles.cardContainer}
     >
-      <Box
-        borderColor="coolGray.200"
-        borderWidth="1"
-        bg="white"
-        p="4"
-        m="2"
-        rounded="md"
-        shadow="3"
-      >
-        <Text fontSize="md" bold mb="2">
+      <Box bg="white" shadow={2} rounded="lg" p="4" alignItems="center">
+        <Text fontSize="md" bold mb="2" color="coolGray.800">
           {item.front}
         </Text>
+        {item.image && (
+          <Image
+            source={{ uri: item.image }}
+            alt="Card Image"
+            size="md"
+            mb="2"
+          />
+        )}
         <Text fontSize="xs" color="coolGray.600">
           {item.back}
         </Text>
-        {item.image && (
-          <Image source={{ uri: item.image }} alt="Card Image" size="md" />
-        )}
       </Box>
     </Pressable>
   );
 
   if (isLoading) {
     return (
-      <Center>
+      <Center flex={1}>
         <Text>Loading...</Text>
       </Center>
     );
@@ -102,53 +120,76 @@ const DeckDetailScreen = ({ route, navigation }) => {
 
   if (error) {
     return (
-      <Center>
+      <Center flex={1}>
         <Text>{error}</Text>
       </Center>
     );
   }
 
   return (
-    <Box safeArea p="2">
+    <Box safeArea p="2" flex={1} bg={theme.colors.coolGray[50]}>
       {deck ? (
-        <>
-          <Heading>{deck.name}</Heading>
-          <Text mb="4">{deck.description}</Text>
-          <Button onPress={handleEditPress} colorScheme="blue">
-            Edit Deck
+        <VStack space={4}>
+          <Heading color={theme.colors.indigo[500]}>{deck.name}</Heading>
+          <Text fontSize="sm" mb={4}>
+            {deck.description}
+          </Text>
+          <Button
+            onPress={() => navigation.navigate("DeckLearn", { deckId })}
+            colorScheme="emerald"
+            mb={3}
+          >
+            Learn Deck
           </Button>
-          <Button onPress={handleDeletePress} colorScheme="red" mt={4}>
-            Delete Deck
-          </Button>
-          {isFocused && (
-            <Fab
-              position="absolute"
-              size="sm"
-              icon={<Ionicons name="add" size={20} color="white" />}
-              onPress={() =>
-                navigation.navigate("CardCreate", {
-                  deckId: deckId,
-                  setRefresh,
-                })
-              }
-              style={{ marginBottom: 35, marginRight: 20 }}
-            />
+          {!isMarketplace && (
+            <View key={"nonMarketPlace"}>
+              <Button onPress={handleEditPress} colorScheme="blue" mb={2}>
+                Edit Deck
+              </Button>
+              <Button onPress={handleDeletePress} colorScheme="red" mb={4}>
+                Delete Deck
+              </Button>
+            </View>
+          )}
+          {isMarketplace && (
+            <View key={"marketplace"}>
+              <Button onPress={handleAddToDecks} colorScheme="emerald" mb={3}>
+                Add to Decks
+              </Button>
+            </View>
           )}
           <FlatList
             data={cards}
             renderItem={renderCard}
             keyExtractor={(item) => item.id.toString()}
+            key={deckId}
             numColumns={2}
-            style={{ marginTop: 10 }}
           />
-        </>
+          {!isMarketplace && isFocused && (
+            <Fab
+              position="absolute"
+              size="sm"
+              icon={<Ionicons name="add" size={20} color="white" />}
+              onPress={() => navigation.navigate("CardCreate", { deckId })}
+              style={{ bottom: 75, right: 15 }}
+              colorScheme="emerald"
+            />
+          )}
+        </VStack>
       ) : (
-        <Center>
+        <Center flex={1}>
           <Text>Deck not found</Text>
         </Center>
       )}
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  cardContainer: {
+    width: "48%",
+    margin: "1%",
+  },
+});
 
 export default DeckDetailScreen;

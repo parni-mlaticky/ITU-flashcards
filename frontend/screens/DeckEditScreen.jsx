@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import {
   ScrollView,
-  Box,
   Button,
   FormControl,
   Input,
   Center,
   VStack,
   Text,
+  Switch,
 } from "native-base";
 import axios from "axios";
 
 const DeckEditScreen = ({ route, navigation }) => {
   const { deckId } = route.params;
-  const [deck, setDeck] = useState({ name: "", description: "" });
+  const [deck, setDeck] = useState({
+    name: "",
+    description: "",
+    is_shared: false,
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,7 +25,9 @@ const DeckEditScreen = ({ route, navigation }) => {
     const fetchDeck = async () => {
       try {
         const response = await axios.get(`/decks/${deckId}`);
-        setDeck(response.data);
+        const fetchedDeck = response.data;
+        const isSharedBool = fetchedDeck.is_shared === 1 ? true : false;
+        setDeck({ ...fetchedDeck, is_shared: isSharedBool });
       } catch (err) {
         setError("Error fetching deck");
         console.error(err);
@@ -74,6 +80,13 @@ const DeckEditScreen = ({ route, navigation }) => {
           <Input
             value={deck.description}
             onChangeText={(value) => setDeck({ ...deck, description: value })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormControl.Label>Shared</FormControl.Label>
+          <Switch
+            isChecked={deck.is_shared}
+            onToggle={() => setDeck({ ...deck, is_shared: !deck.is_shared })}
           />
         </FormControl>
         <Button onPress={handleUpdateDeck}>Update Deck</Button>

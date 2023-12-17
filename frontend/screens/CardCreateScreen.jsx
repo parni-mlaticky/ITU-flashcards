@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, FormControl, Input, Center, VStack, Image } from "native-base";
+import {
+  Button,
+  FormControl,
+  Input,
+  Center,
+  VStack,
+  Image,
+  Flex,
+} from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
@@ -55,8 +63,6 @@ const CardCreateScreen = ({ navigation, route }) => {
         );
       }
 
-      console.log("formData: ", formData);
-
       const deck_id = Number(deckId);
 
       const response = await axios.post(`/decks/${deck_id}/cards`, formData, {
@@ -77,7 +83,7 @@ const CardCreateScreen = ({ navigation, route }) => {
     }
   };
   return (
-    <Center flex={1} px={3} bg="coolGray.50">
+    <Flex flex={1} px={3} bg="coolGray.50" alignItems={"center"}>
       <VStack space={4} w="90%">
         <FormControl>
           <FormControl.Label>Front</FormControl.Label>
@@ -102,7 +108,7 @@ const CardCreateScreen = ({ navigation, route }) => {
           Create Card
         </Button>
       </VStack>
-    </Center>
+    </Flex>
   );
 };
 

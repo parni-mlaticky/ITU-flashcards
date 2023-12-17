@@ -7,6 +7,7 @@ import ArticlesScreen from "./screens/ArticlesScreen";
 import DeckDetailScreen from "./screens/DeckDetailScreen";
 import DeckCreateScreen from "./screens/DeckCreateScreen";
 import DeckEditScreen from "./screens/DeckEditScreen";
+import DeckLearnScreen from "./screens/DeckLearnScreen";
 import GroupsScreen from "./screens/GroupsScreen";
 import GroupDetailsScreen from "./screens/GroupDetailsScreen";
 import GroupCreateScreen from "./screens/GroupCreateScreen";
@@ -15,6 +16,7 @@ import GroupMarketScreen from "./screens/GroupsMarketScreen";
 import CardDetailScreen from "./screens/CardDetailScreen";
 import CardCreateScreen from "./screens/CardCreateScreen";
 import CardEditScreen from "./screens/CardEditScreen";
+import MarketplaceScreen from "./screens/MarketplaceScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState, useEffect } from "react";
@@ -115,6 +117,8 @@ export default function App() {
             let iconName;
             if (route.name === "Decks") {
               iconName = focused ? "home" : "home-outline";
+            } else if (route.name === "Marketplace") {
+              iconName = focused ? "ios-cart" : "ios-cart-outline";
             } else if (route.name === "Groups") {
               iconName = focused ? "ios-people" : "ios-people-outline";
             } else if (route.name === "Articles") {
@@ -137,6 +141,7 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Decks" component={DecksScreen} />
+        <Tab.Screen name="Marketplace" component={MarketplaceScreen} />
         <Tab.Screen name="Groups" component={GroupsScreen} />
         <Tab.Screen name="Articles" component={ArticlesScreen} />
       </Tab.Navigator>
@@ -159,6 +164,7 @@ export default function App() {
               <Stack.Screen name="DeckDetail" component={DeckDetailScreen} />
               <Stack.Screen name="DeckCreate" component={DeckCreateScreen} />
               <Stack.Screen name="DeckEdit" component={DeckEditScreen} />
+              <Stack.Screen name="DeckLearn" component={DeckLearnScreen} />
               <Stack.Screen name="CardDetail" component={CardDetailScreen} />
               <Stack.Screen name="CardCreate" component={CardCreateScreen} />
               <Stack.Screen name="CardEdit" component={CardEditScreen} />

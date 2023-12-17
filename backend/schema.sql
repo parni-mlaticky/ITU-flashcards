@@ -48,7 +48,8 @@ create table FlashcardDeck (
   id integer primary key auto_increment,
   author_id integer,
   name varchar(255),
-  description text
+  description text,
+  is_shared boolean
 );
 
 alter table FlashcardDeck add constraint fk_deck_author_id foreign key (author_id) references RegisteredUser(id) on delete cascade;
@@ -115,7 +116,6 @@ create table Choice (
   question_id integer,
   content text
 );
-
 
 create table MultipleChoiceQuestion (
   id integer primary key auto_increment,

@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Button, FormControl, Input, Center, VStack, Text } from "native-base";
+import {
+  Button,
+  FormControl,
+  Input,
+  Flex,
+  VStack,
+  Heading,
+  HStack,
+  Text,
+  Switch,
+} from "native-base";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DeckCreateScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [isShared, setIsShared] = useState(false);
   const { setRefresh } = route.params;
 
   const handleCreateDeck = async () => {
@@ -18,6 +29,7 @@ const DeckCreateScreen = ({ navigation, route }) => {
           author_id,
           name,
           description,
+          isShared,
         },
         {
           headers: {
@@ -34,19 +46,54 @@ const DeckCreateScreen = ({ navigation, route }) => {
   };
 
   return (
-    <Center flex={1} px={3} bg="coolGray.50">
-      <VStack space={4} w="90%">
+    <Flex flex={1} px={4} bg="blueGray.100" mt={5} alignItems={"center"}>
+      <Heading color="emerald.500" fontSize="xl" mb={6}>
+        Create New Deck
+      </Heading>
+      <VStack space={5} w="90%" maxW="400px">
         <FormControl>
-          <FormControl.Label>Name</FormControl.Label>
-          <Input value={name} onChangeText={setName} />
+          <FormControl.Label _text={{ color: "coolGray.800" }}>
+            Name
+          </FormControl.Label>
+          <Input
+            value={name}
+            onChangeText={setName}
+            bg="white"
+            borderColor="coolGray.300"
+            _focus={{ borderColor: "emerald.500" }}
+          />
         </FormControl>
         <FormControl>
-          <FormControl.Label>Description</FormControl.Label>
-          <Input value={description} onChangeText={setDescription} />
+          <FormControl.Label _text={{ color: "coolGray.800" }}>
+            Description
+          </FormControl.Label>
+          <Input
+            value={description}
+            onChangeText={setDescription}
+            bg="white"
+            borderColor="coolGray.300"
+            _focus={{ borderColor: "emerald.500" }}
+            multiline
+            numberOfLines={4}
+          />
         </FormControl>
-        <Button onPress={handleCreateDeck}>Create Deck</Button>
+        <HStack alignItems="center" space={2}>
+          <Text>Share on Marketplace:</Text>
+          <Switch
+            isChecked={isShared}
+            onToggle={() => setIsShared(!isShared)}
+            colorScheme="emerald"
+          />
+        </HStack>
+        <Button
+          colorScheme="emerald"
+          onPress={handleCreateDeck}
+          _text={{ color: "white" }}
+        >
+          Create Deck
+        </Button>
       </VStack>
-    </Center>
+    </Flex>
   );
 };
 
