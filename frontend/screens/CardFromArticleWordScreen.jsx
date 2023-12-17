@@ -1,12 +1,19 @@
+/**
+ * @file Screen for creating a new card from a selection (like a word) in an article. Shown when user selects a word in an article and chooses to add it to a deck.
+ * @author Vladimír Hucovič
+ */
+
 import {useEffect, useState} from 'react';
 import { Box, Text, HStack, Button } from 'native-base';
 import axios from 'axios';
-import { TouchableHighlight } from 'react-native';
+import { TouchableHighlight, TextInput } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const CardFromArticleWordScreen = ({ navigation, route } ) => {
     const [availableTranslations, setAvailableTranslations] = useState(null);
     const [selectedTranslation, setSelectedTranslation] = useState(null);
+    const [selectedCustomTranslation, setSelectedCustomTranslation] = useState(false);
+    const [customTranslation, setCustomTranslation] = useState("");
 
     useEffect(() => {
         fetchAvailableTranslations();
@@ -15,22 +22,17 @@ const CardFromArticleWordScreen = ({ navigation, route } ) => {
     const fetchAvailableTranslations = async () => {
         const query = `/articles/${article.id}/translation`
         const translationsForSelection = []
-        console.log(query);
         const response = await axios.get(query)
-        console.log("available translations", response.data);
+        if(!response.data?.length) return setAvailableTranslations([]);
         for(let translation of response.data){
             const allFromUser = await axios.get(`/articles/${article.id}/translation/${translation.author_id}`)
-            console.log("all from user", allFromUser.data);
             for(let userTranslation of allFromUser.data){
                 if(userTranslation.start_char_index === selection.start && userTranslation.end_char_index === selection.end){
                     const authorName = await axios.get(`/users/name/${userTranslation.author_id}`)
-                    console.log("author name", authorName.data);
-                    console.log("user has translation for this selection");
                         translationsForSelection.push({authorName: authorName.data.username, content: userTranslation.content});
                 }
             }
         }
-        console.log("translations for selection", translationsForSelection);
         setAvailableTranslations(translationsForSelection);
     }
 
@@ -47,7 +49,7 @@ const CardFromArticleWordScreen = ({ navigation, route } ) => {
                     ]}
                     onPress={() => {
                         setSelectedTranslation(index);
-                        //navigation.navigate("CreateDeck", {word: translation.content});
+                        setSelectedCustomTranslation(false);
                     }}
                     underlayColor="transparent"
                 >
@@ -63,8 +65,6 @@ const CardFromArticleWordScreen = ({ navigation, route } ) => {
         )
     }
     const { article, selection } = route.params;
-    console.log("article", article)
-    console.log("selection", selection)
 
     const selectedContent = article.content.slice(selection.start, selection.end);
 
@@ -75,7 +75,38 @@ const CardFromArticleWordScreen = ({ navigation, route } ) => {
         </Text>
 
         { renderTranslations() }
-        {selectedTranslation !== null && <Button marginTop={5} onPress={() =>{navigation.navigate("DeckSelect", {front: selectedContent, back: availableTranslations[selectedTranslation].content})}}>Choose translation</Button>}
+        <TouchableHighlight
+                    key={1000}
+                    style={[
+                        styles.touchableHighlight,
+                        selectedCustomTranslation && styles.highlighted
+                    ]}
+                    onPress={() => {
+                        setSelectedCustomTranslation(true);
+                        setSelectedTranslation(null);
+                        setCustomTranslation("");
+                    }}
+                    underlayColor="transparent"
+                >
+                    <HStack style={styles.hStack}>
+                        <Box style={styles.textContainer}>
+                            <Text style={styles.text}>Provide own translation</Text>
+                        </Box>
+                    </HStack>
+        </TouchableHighlight>
+        {selectedCustomTranslation && 
+        <TextInput placeholder="Custom translation" placeholderTextColor="grey" onChangeText={(newText) => {setCustomTranslation(newText)}} style={{
+            borderWidth: 1,
+            borderColor: 'grey',
+            borderRadius: 5,
+            padding: 10,
+            minHeight: 40,
+            fontSize: 16,
+            marginTop: 10
+            }}>
+        </TextInput>}
+        {(selectedTranslation !== null || selectedCustomTranslation && customTranslation !== "") && <Button marginTop={5} onPress={() =>{navigation.navigate("DeckSelect", {front: selectedContent, back: customTranslation !== "" ? customTranslation : availableTranslations[selectedTranslation].content})}}>Choose translation</Button>}
+        
         </Box>
     )
 }
@@ -86,7 +117,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     highlighted: {
-        backgroundColor: 'lightblue', // Highlight color
+        backgroundColor: 'lightblue',
     },
     textContainer: {
         width: '100%',

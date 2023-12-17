@@ -1,3 +1,8 @@
+/**
+ * @file Difficulty rating component, shown on the article details page. Allows users to rate the difficulty of an article.
+ * @author Vladimír Hucovič
+ */
+
 import axios from "axios";
 import {Text, Box, Center, Button, HStack} from "native-base"
 import { useEffect } from "react";
@@ -36,21 +41,18 @@ const difficutlyRating = (article) => {
     }
 
     useEffect(() => {
-        fetchRating = async () => {
+        const fetchRating = async () => {
             const userId = await AsyncStorage.getItem("user");
             const query = `/articles/${article.article.id}/rating/${userId}`
             const userRating = await axios.get(query);
             setRating(userRating?.data?.rating || null);
         }
         fetchRating();
-        // fetch the users rating on this article
-        // if they have not rated it, display the rating buttons
-        // if they have rated it, display their rating
     }, [rating]);
 
     return (
         <>
-        <Box safeAreaBottom={20} alignItems={"center"}>
+        <Box safeAreaBottom={2} alignItems={"center"}>
             <Text fontSize={30}>Difficulty rating</Text>
             <HStack>
                 <Text style={{verticalAlign:"middle"}} marginTop={4} marginLeft={5} marginRight={5}>Easy</Text>

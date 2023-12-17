@@ -1,3 +1,8 @@
+/**
+ * @file Screen for selecting a deck to add a card to, when user selects a word in an article and chooses to add it to a deck.
+ * @author Vladimír Hucovič
+ */
+
 import { useState, useEffect }from 'react'
 import { Box, HStack, Text, Button } from 'native-base'
 import axios from 'axios'
@@ -75,7 +80,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     highlighted: {
-        backgroundColor: 'lightblue', // Highlight color
+        backgroundColor: 'lightblue',
     },
     textContainer: {
         width: '100%',

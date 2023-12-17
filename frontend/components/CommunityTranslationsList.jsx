@@ -1,3 +1,8 @@
+/**
+ * @file List of community translations for an article, shown on the article details page.
+ * @author Vladimír Hucovič
+ */
+
 import { useEffect, useState, useCallback} from 'react';
 import { Text } from 'react-native';
 import axios from 'axios';
@@ -53,7 +58,7 @@ const CommunityTranslationsList = ({ article, show, translationSelectCallback })
                                 <Text flex={1} textAlign="left" paddingLeft={1}>{"Author: " + translation.username}</Text>
                                 <HStack flex={1} justifyContent="flex-end">
                                     <Icon name="star" size={20} color="gold" />
-                                    <Text marginLeft={1}>Rating here</Text>
+                                    <Text marginLeft={1}></Text>
                                 </HStack>
                             </HStack>
                         </TouchableHighlight>

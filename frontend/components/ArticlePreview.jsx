@@ -49,16 +49,12 @@ const ArticlePreview = ({ article, previewSelectHandler, openArticleCallback, un
     const getRatingColor2 = () => {
         if (!avgRating) return "black";
       
-        // Define the hue for green and red (in HSL)
-        const greenHue = 120; // Hue for green
-        const redHue = 0; // Hue for red
+        const greenHue = 120;
+        const redHue = 0;
       
-        // Calculate the hue based on the rating
-        // If rating is 1 (green), the hue is greenHue (120)
-        // If rating is 5 (red), the hue is redHue (0)
         const hue = greenHue - ((avgRating - 1) / (5 - 1)) * (greenHue - redHue);
       
-        return `hsl(${hue}, 100%, 50%)`; // Full saturation and 50% lightness
+        return `hsl(${hue}, 100%, 50%)`; 
       };
 
     return (        
@@ -66,18 +62,19 @@ const ArticlePreview = ({ article, previewSelectHandler, openArticleCallback, un
             <Box padding="5">
                 {article.cover_image_link ? (
                 <TouchableHighlight onPress={openArticle}>
-                    <Image on
-                        style={{ width: 150, height: 100 }} 
+                    <Image borderWidth={2} borderColor={"black"} borderRadius={10} minWidth={150} minHeight={100}
                         source={{ uri: article.cover_image_link }} 
-                        alt={article.heading}
+                        alt={"Image not found"}
                     />  
                 </TouchableHighlight>
                 ) : (
-                    <Text>No image available</Text>
+                    <Text minWidth={150} alignSelf={"center"}>No image available</Text>
                 )}
             </Box>
             <Box flex={1}>
-                <TextInput scrollEnable={false} value={article.heading} editable={false} padding={0} margin={0} onSelectionChange={() => {}} multiline></TextInput>
+                <TouchableHighlight underlayColor={"lightblue"} onPress={openArticle}>
+                    <Text>{article.heading}</Text>
+                </TouchableHighlight>
                 <Text style={{color:getRatingColor(),}}>{"Difficulty: " + (avgRating ? Number(avgRating).toPrecision(2) : "No ratings yet")}</Text>
             </Box>
         </Box>
