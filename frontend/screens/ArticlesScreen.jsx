@@ -63,11 +63,11 @@ const ArticlesScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView>
-    <Box flex={1} px={3} bg="coolGray.50">
-      <Box safeArea p="4" py="0" w="100%" maxW="400">
+    <Box flex={1} px={2} bg="coolGray.50">
+      <Box safeArea p="0" py="0" w="100%" maxW="400">
         {
           data ? (
-            <VStack space={3} mt="5">
+            <VStack space={2} mt="0">
               <View>
                 {data.map((article) => {
                   return (

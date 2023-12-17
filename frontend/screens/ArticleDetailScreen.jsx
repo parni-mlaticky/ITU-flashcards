@@ -157,7 +157,7 @@ const ArticleDetailScreen = (article) => {
                 <Text fontSize={30}>{heading}</Text>
             </Box>
             <Box alignItems="center">
-                <Image style={{margin:10}} source={{ uri: cover_image_link }} alt={heading} height={200} width={200}/>
+                <Image style={{margin:10}} source={{ uri: cover_image_link }} alt={heading} height={200} width={300}/>
                 <HStack safeArea={2}>
                     <Button margin={1} onPress={() => { Linking.openURL(source_link) }}>Open original article</Button>
                     <Button margin={1} onPress={showCommunityTranslations} >See community translations</Button>

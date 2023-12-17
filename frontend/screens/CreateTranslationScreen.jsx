@@ -1,6 +1,6 @@
 import { HStack, VStack, Box, Button } from 'native-base';
 import {useState} from 'react';
-import { Text, TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -50,34 +50,45 @@ const CreateTranslationScreen = ({route, navigation}) => {
     }
 
     return (
-        <VStack style={styles.container}>
-            <Box style={styles.textContainer}>
-                <Text style={styles.text}>
-                    <Text style={{fontWeight: 'bold'}}>Translating text:</Text>
-                    {"\n"}
-                    <Text>{article.content.slice(selection.start, selection.end)}</Text>
-                </Text>
-            </Box>
-            <Box style={styles.inputContainer}>
-                <TextInput placeholder='Translation'
-                    placeholderTextColor={'grey'}
-                    editable={true}
-                    style={styles.textInput}
-                    onChangeText={(newText) => {handleTextChange(newText)}}
-                />
-            </Box>
-            <Box safeArea={10}>
-                <Button onPress={createTranslation}>Create translation</Button>
-            </Box>
-        </VStack>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.keyboardAvoidingView}
+        >
+        <ScrollView contentContainerStyle={styles.container}>
+            <VStack style={styles.container}>
+                <Box style={styles.textContainer}>
+                    <Text style={styles.text}>
+                        <Text style={{fontWeight: 'bold'}}>Translating text:</Text>
+                        {"\n"}
+                        <Text>{article.content.slice(selection.start, selection.end)}</Text>
+                    </Text>
+                </Box>
+                <Box style={styles.inputContainer}>
+                    <TextInput placeholder='Translation'
+                        placeholderTextColor={'grey'}
+                        editable={true}
+                        style={styles.textInput}
+                        multiline
+                        onChangeText={(newText) => {handleTextChange(newText)}}
+                    />
+                </Box>
+                <Box safeArea={10}>
+                    <Button onPress={createTranslation}>Create translation</Button>
+                </Box>
+            </VStack>
+        </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    keyboardAvoidingView: {
         flex: 1,
+    },
+    container: {
+        flexGrow: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     textContainer: {
         marginBottom: 20

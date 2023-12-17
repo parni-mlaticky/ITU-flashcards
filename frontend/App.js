@@ -28,6 +28,8 @@ import BASE_URL from "./url";
 import ArticleDetailScreen from "./screens/ArticleDetailScreen";
 import CreateTranslationScreen from "./screens/CreateTranslationScreen";
 import SelectionOverlay from "./components/SelectionOverlay";
+import CardFromArticleWordScreen from "./screens/CardFromArticleWordScreen";
+import DeckSelectScreen from "./screens/DeckSelectScreen";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -180,6 +182,8 @@ export default function App() {
               <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
               <Stack.Screen name="CreateTranslation" component={CreateTranslationScreen}/>
               <Stack.Screen name="SelectionMenu" component={SelectionOverlay}/>
+              <Stack.Screen name="AddCardToDeck" component={CardFromArticleWordScreen}/>
+              <Stack.Screen name="DeckSelect" component={DeckSelectScreen}/>
             </>
           ) : (
             <>

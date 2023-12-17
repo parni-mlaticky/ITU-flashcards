@@ -67,7 +67,7 @@ const ArticlePreview = ({ article, previewSelectHandler, openArticleCallback, un
                 {article.cover_image_link ? (
                 <TouchableHighlight onPress={openArticle}>
                     <Image on
-                        style={{ width: 100, height: 100 }} 
+                        style={{ width: 150, height: 100 }} 
                         source={{ uri: article.cover_image_link }} 
                         alt={article.heading}
                     />  
