@@ -13,6 +13,8 @@ import GroupDetailsScreen from "./screens/GroupDetailsScreen";
 import GroupCreateScreen from "./screens/GroupCreateScreen";
 import GroupUserListScreen from "./screens/GroupUserListScreen";
 import GroupMarketScreen from "./screens/GroupsMarketScreen";
+import GroupTestListScreen from "./screens/GroupTestListScreen";
+import GroupTestDetailsScreen from "./screens/GroupTestDetailsScreen";
 import CardDetailScreen from "./screens/CardDetailScreen";
 import CardCreateScreen from "./screens/CardCreateScreen";
 import CardEditScreen from "./screens/CardEditScreen";
@@ -30,6 +32,7 @@ import CreateTranslationScreen from "./screens/CreateTranslationScreen";
 import SelectionOverlay from "./components/SelectionOverlay";
 import CardFromArticleWordScreen from "./screens/CardFromArticleWordScreen";
 import DeckSelectScreen from "./screens/DeckSelectScreen";
+
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -172,13 +175,12 @@ export default function App() {
               <Stack.Screen name="CardDetail" component={CardDetailScreen} />
               <Stack.Screen name="CardCreate" component={CardCreateScreen} />
               <Stack.Screen name="CardEdit" component={CardEditScreen} />
-              <Stack.Screen name="GroupCreate" component={GroupCreateScreen} />
-              <Stack.Screen name="GroupUserList" component={GroupUserListScreen}/>
-              <Stack.Screen name="GroupMarket" component={GroupMarketScreen}/>
-              <Stack.Screen
-                name="GroupDetails"
-                component={GroupDetailsScreen}
-              />
+              <Stack.Screen name="GroupCreate" component={GroupCreateScreen} options={{ title: 'Group Creation' }} />
+              <Stack.Screen name="GroupUserList" component={GroupUserListScreen} options={{ title: 'Members' }} />
+              <Stack.Screen name="GroupMarket" component={GroupMarketScreen} options={{ title: 'Explore Learning Groups' }} />
+              <Stack.Screen name="GroupTestList" component={GroupTestListScreen} options={{ title: 'Tests' }} />
+              <Stack.Screen name="GroupTestDetails" component={GroupTestDetailsScreen} options={{ title: 'Test' }} />
+              <Stack.Screen name="GroupDetails" component={GroupDetailsScreen} options={{ title: 'Learning Group' }}/>
               <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
               <Stack.Screen name="CreateTranslation" component={CreateTranslationScreen}/>
               <Stack.Screen name="SelectionMenu" component={SelectionOverlay}/>

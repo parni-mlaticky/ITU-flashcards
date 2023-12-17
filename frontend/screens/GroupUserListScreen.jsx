@@ -1,3 +1,8 @@
+/**
+ * A screen for listing members of a given gruop.
+ * @file frontend/screens/GroupUserListSscreen.jsx
+ * @author Ondřej Zobal (xzobal01)
+ * */
 import React from "react";
 import {
   VStack,
@@ -37,7 +42,6 @@ const GroupsUserList = (navigation, { group }) => {
         // awaiting all the user information
         const awaited_users = await Promise.all(users);
         setMembers(awaited_users);
-        console.log(awaited_users);
       } catch(e) {
         console.log(e);
       }
@@ -46,13 +50,11 @@ const GroupsUserList = (navigation, { group }) => {
 
   return (
   <ScrollView>
-    <Text mb="15px" fontSize="20">{`${group.name} has ${members.length} students:`}</Text>
+    <Text mb="15px" p="20px" fontSize="25">{`${group.name} has ${members.length} students:`}</Text>
     <Divider/>
-    <Box >
-      {members.map(member => (
-      <Text fontSize="40" key={member.id}>{member.username}</Text>
-    ))}
-    </Box>
+    {members.map(member => (
+    <Text borderRadius="lg" bg={"#d4d9d6"} p="20px" m="10px" fontSize="30" key={member.id}>{member.username}</Text>
+  ))}
   </ScrollView>
   );
 };

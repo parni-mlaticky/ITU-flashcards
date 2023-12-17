@@ -28,8 +28,8 @@ class LearningGroup extends ORMBase {
     return await RegisteredUser.getById(this.lector_id);
   }
 
-  async getTests() {
-    return await Test.getAllByGroupId(this.id);
+  async getTests(user_id) {
+    return await Test.getAllByGroupId(this.id, user_id);
   }
 
   async addUser(user_id) {
@@ -43,12 +43,12 @@ class LearningGroup extends ORMBase {
   }
 
   static async postMessage(group_id, user_id, text) {
-    const message = new GroupMessage({ group_id, user_id, text });
+    const message = new GroupMessage({ id: null, group_id, user_id, content: text });
     await message.save();
   }
 
   static async getGroupsByUserId(user_id) {
-    const query = `SELECT *, l.id AS id FROM LearningGroupMember m RIGHT JOIN ${this.name} l ON m.group_id = l.id WHERE m.user_id = ? OR l.lector_id = ?`;
+    const query = `SELECT  DISTINCT l.*, l.id AS id FROM LearningGroupMember m RIGHT JOIN ${this.name} l ON m.group_id = l.id WHERE m.user_id = ? OR l.lector_id = ?`;
     const [rows] = await db.query(query, [user_id, user_id]);
     return rows.map(entry => new this(entry));
   }

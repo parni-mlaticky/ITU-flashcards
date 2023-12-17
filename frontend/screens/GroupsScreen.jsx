@@ -1,3 +1,10 @@
+/**
+ * A screen for displaying a list of groups in which
+ * the current user is a member
+ * @file frontend/screens/GroupsScreen.jsx
+ * @author Ondřej Zobal (xzobal01)
+ **/
+
 import React from "react";
 import {
   VStack,
@@ -47,7 +54,7 @@ const GroupsPage = ({ navigation }) => {
     return (
       <>
         <Pressable onPress={() => groupClickHandler(group.id)} mb="10">
-          <Box bg={[ "#d4d9d6" ]} p="15px" borderRadius="lg">
+          <Box bg={[ "#d4d9d6" ]} p="15px" borderRadius="lg" >
             <Text bold fontSize="30">{group.name}</Text>
             <Divider/>
             <Text italic fontSize="15">{group.description}</Text>

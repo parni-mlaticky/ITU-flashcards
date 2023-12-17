@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const constants = require("../constants");
 const groupModel = require("../objects/LearningGroup");
+const testModel = require("../objects/Test");
+const fullTextQuestionModel = require("../objects/FulltextQuestion");
+const fullTextAnswerModel = require("../objects/FulltextAnswer");
 const wrapped = require("./errorWrapper");
 
 // Get all learning groups
@@ -75,47 +78,100 @@ router.post("/:id/leave", wrapped(async (req, res) => {
 
 // Chat for all members of the group
 router.get("/:id/chat", wrapped(async (req, res) => {
-    const chat = await groupModel.getChat(req.params.id);
+    const group = await groupModel.getById(req.params.id);
+    const chat = await group.getChat();
     res.status(200).json(chat);
 }));
 
 // Post a message to group chat
 router.post("/:id/chat", wrapped(async (req, res) => {
     const group = await groupModel.getById(req.params.id);
-    group.postMessage(req.body.message);
-    res.status(200).json(chat);
+    await groupModel.postMessage(group.id, req.body.user_id, req.body.text);
+    res.status(200).json();
 }));
 
 router.get("/:id/tests", wrapped(async (req, res) => {
-    const tests = await groupModel.getTests(req.params.id);
+    const group = await groupModel.getById(req.params.id);
+    const tests = await group.getTests(req.query.user_id);
     res.status(200).json(tests);
 }));
 
 router.post("/:id/tests", wrapped(async (req, res) => {
-    const test = await groupModel.createTest(req.params.id, req.body);
-    res.status(200).json(test);
+    req.body.group_id = req.params.id;
+    const test = new testModel(req.body);
+    const response = await test.save()
+    res.status(200).json(response);
 }));
 
 router.get("/:id/tests/:testId", wrapped(async (req, res) => {
-    const test = await groupModel.getTest(req.params.id, req.params.testId);
+    const test = await testModel.getById(req.params.testId);
+    res.status(200).json(test);
+}));
+
+router.get("/:id/tests/:testId/all", wrapped( async (req, res) => {
+    const users = await testModel.getUsersWhoAnsweredByTestId(req.params.testId);
+    res.status(200).json(users);
+}));
+
+router.get("/:id/tests/:testId/fulltext", wrapped(async (req, res) => {
+    const questions = await fullTextQuestionModel.getByTestId(req.params.testId);
+    res.status(200).json(questions);
+}));
+
+router.post("/:id/tests/:testId/fulltext", wrapped(async (req, res) => {
+    const question = new fullTextQuestionModel(req.body);
+    const response = await question.save();
+    res.status(200).json(response);
+}));
+
+router.get("/:id/tests/:testId/fulltext/:questionId", wrapped(async (req, res) => {
+    const question = await fullTextQuestionModel.getById(req.params.questionId);
+    res.status(200).json(question);
+}));
+
+
+router.delete("/:id/tests/:testId/fulltext/:questionId", wrapped(async (req, res) => {
+    const question = await fullTextQuestionModel.getById(req.params.questionId);
+    const result = await question?.delete();
+    res.status(200).json(result);
+}));
+
+router.put("/:id/tests/:testId/fulltext/:questionId", wrapped(async (req, res) => {
+    const question = new fullTextQuestionModel(req.body);
+    const result = await question.save();
+    res.status(200).json(result);
+}));
+
+// Posting on a question answers it
+router.post("/:id/tests/:testId/fulltext/:questionId", wrapped(async (req, res) => {
+    req.body.id = null;
+    const answer = new fullTextAnswerModel(req.body);
+    const result = await answer.save();
+    res.status(200).json(result);
+}));
+
+router.get("/:groupId/tests/:testId/fulltext/answers/:userId", wrapped(async (req, res) => {
+    const answers = await fullTextAnswerModel.getByTestIdAndUserId(req.params.testId, req.params.userId)
+    res.status(200).json(answers);
+}));
+
+
+router.post("/:id/tests/:testId/options", wrapped(async (req, res) => {
+
     res.status(200).json(test);
 }));
 
 router.put("/:id/tests/:testId", wrapped(async (req, res) => {
-    const test = await groupModel.updateTest(
-      req.params.id,
-      req.params.testId,
-      req.body,
-    );
-    res.status(200).json(test);
+    req.body.id = req.params.testId;
+    req.body.group_id = req.params.id;
+    const test = new testModel(req.body);
+    const response = await test.save();
+    res.status(200).json(response);
 }));
 
 router.delete("/:id/tests/:testId", wrapped(async (req, res) => {
-    const test = await groupModel.deleteTest(
-      req.params.id,
-      req.params.testId,
-      req.body,
-    );
+    const test = await testModel.getById(req.params.testId);
+    await test.delete()
     res.status(200).json(test);
 }));
 

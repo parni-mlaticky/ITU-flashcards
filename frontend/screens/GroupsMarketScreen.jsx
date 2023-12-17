@@ -1,3 +1,9 @@
+/**
+ * A screen for advertising groups to other users
+ * @file frontend/screens/GroupMarketSscreen.jsx
+ * @author Ondřej Zobal (xzobal01)
+ **/
+
 import React from "react";
 import {
   VStack,

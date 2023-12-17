@@ -26,6 +26,7 @@
     "expo": "^49.0.0",
     "expo-image-picker": "~14.3.2",
     "expo-status-bar": "~1.6.0",
+    "ionicons": "^7.2.2",
     "native-base": "3.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
