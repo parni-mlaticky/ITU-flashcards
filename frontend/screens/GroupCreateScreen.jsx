@@ -1,3 +1,9 @@
+/**
+ * A screen for creating new groups
+ * @file frontend/screens/GroupCreateSscreen.jsx
+ * @author Ondřej Zobal (xzobal01)
+ **/
+
 import React from "react";
 import {
   VStack,
