@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: DeckLearnScreen.jsx
+ *  @brief: Screen for learning a deck
+ */
 import React, { useState, useEffect } from "react";
 import { Image, Dimensions } from "react-native";
 import {

@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: CardDetailScreen.jsx
+ *  @brief: Screen for displaying card details
+ */
 import React, { useState, useEffect } from "react";
 import { Image, Dimensions } from "react-native";
 import { Box, Text, Center, VStack, Pressable, Button } from "native-base";

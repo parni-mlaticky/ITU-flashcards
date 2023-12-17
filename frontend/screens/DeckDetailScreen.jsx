@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: DeckDetailScreen.jsx
+ *  @brief: Screen for displaying deck details
+ */
 import React, { useState, useEffect } from "react";
 import { FlatList, Pressable, StyleSheet } from "react-native";
 import {

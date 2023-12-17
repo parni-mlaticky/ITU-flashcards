@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: MarketplaceScreen.jsx
+ *  @brief: Screen for displaying marketplace decks
+ */
 import React, { useState, useEffect } from "react";
 import { FlatList, Pressable } from "react-native";
 import { Box, Center, Heading, Text, Fab, ScrollView } from "native-base";

@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: marketplace.js
+ *  @brief: Marketplace routes
+ */
 const express = require("express");
 const router = express.Router();
 const FlashcardDeck = require("../objects/FlashcardDeck");

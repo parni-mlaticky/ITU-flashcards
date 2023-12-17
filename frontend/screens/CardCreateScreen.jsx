@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: CardCreateScreen.jsx
+ *  @brief: Screen for creating a new card
+ */
 import React, { useState } from "react";
 import {
   Button,
@@ -79,7 +85,7 @@ const CardCreateScreen = ({ navigation, route }) => {
 
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.error("Error creating card", error);
+      //console.error("Error creating card", error);
     }
   };
   return (

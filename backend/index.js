@@ -1,3 +1,9 @@
+/*
+ *  @author: Petr Kolouch xkolou05
+ *  @project: ITU 2023
+ *  @file: index.js
+ *  @brief: Main file
+ */
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
