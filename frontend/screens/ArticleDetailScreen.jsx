@@ -182,7 +182,7 @@ const ArticleDetailScreen = (article) => {
     }
 
     return (
-        <KeyboardAvoidingView style={{flex: 1}} removeClippedSubviews={false}>
+        <KeyboardAvoidingView>
         <ScrollView width={"100%"} removeClippedSubviews={false}>
         <Center width={"100%"} safeArea={5} removeClippedSubviews={false}>
             <Box>
@@ -220,7 +220,7 @@ const ArticleDetailScreen = (article) => {
                     )
                     :
                     <TextInput
-                        style={{marginTop:5, marginBottom:10, lineHeight: 25, padding: 20}} 
+                        style={{zIndex:10, elevation:2, marginTop:5, marginBottom:10, lineHeight: 25, padding: 20}} 
                         safeArea={3} scrollEnabled={false} removeClippedSubviews={false} onSelectionChange={selectionHandle}
                         multiline editable={false} value={translatedContent || content} alignItems="center"
                         fontSize={16}

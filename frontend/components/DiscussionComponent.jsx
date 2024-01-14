@@ -54,7 +54,6 @@ const DiscussionComponent = ({article}) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.keyboardAvoidingView}>
         <Box marginBottom={10} marginLeft={5} marginRight={5}>
-                <ScrollView ref={scrollViewRef} style={{flex:1}}>
                     <Box style={{margin:10, alignContent:"center"}}>
                         <Text marginBottom={0} alignSelf={"center"} fontSize={30}>Discussion</Text>
                     </Box>
@@ -70,7 +69,6 @@ const DiscussionComponent = ({article}) => {
                     <Text alignSelf="center" fontSize={30}>Post a comment</Text>
                     <TextInput value={newComment} onChangeText={(newText) => {setNewComment(newText)}} placeholder='Write a comment!' placeholderTextColor="grey" style={styles.textInput}/>
             {newComment !== "" && <Button marginTop={5} marginBottom={10} onPress={() => {postComment()}}>Post a comment</Button>}
-                </ScrollView>
         </Box>
         </KeyboardAvoidingView>
 
