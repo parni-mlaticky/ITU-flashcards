@@ -99,7 +99,8 @@ create table FulltextQuestion (
   id integer primary key auto_increment,
   test_id integer,
   question text,
-  answer text
+  answer text,
+  ranking integer
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 alter table FulltextQuestion add constraint fk_ftquestion_test_id foreign key (test_id) references Test(id) on delete cascade;
