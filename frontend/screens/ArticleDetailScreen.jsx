@@ -221,7 +221,7 @@ const ArticleDetailScreen = (article) => {
                     :
                     <TextInput
                         style={{marginTop:5, marginBottom:10, lineHeight: 25, padding: 20}} 
-                        safeArea={3} scrollEnabled={false} onSelectionChange={selectionHandle}
+                        safeArea={3} scrollEnabled={false} removeClippedSubviews={false} onSelectionChange={selectionHandle}
                         multiline editable={false} value={translatedContent || content} alignItems="center"
                         fontSize={16}
                     />
