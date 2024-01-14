@@ -182,13 +182,13 @@ const ArticleDetailScreen = (article) => {
     }
 
     return (
-        <KeyboardAvoidingView style={{flex: 1}}>
+        <KeyboardAvoidingView style={{flex: 1}} removeClippedSubviews={false}>
         <ScrollView width={"100%"} removeClippedSubviews={false}>
-        <Center width={"100%"} safeArea={5}>
+        <Center width={"100%"} safeArea={5} removeClippedSubviews={false}>
             <Box>
                 <Text fontSize={30}>{heading}</Text>
             </Box>
-            <Box alignItems="center">
+            <Box alignItems="center" removeClippedSubviews={false}>
                 <Image borderWidth={2} borderColor={"black"} borderRadius={10} style={{margin:10}} source={{ uri: cover_image_link }} alt={heading} height={200} width={300}/>
                 <HStack safeArea={2}>
                     {authorName === null ? (<Button margin={1} onPress={() => { Linking.openURL(source_link) }}>Open original article</Button>) : getAuthorNameComponent()}
@@ -202,7 +202,7 @@ const ArticleDetailScreen = (article) => {
                 </>
                 ) : null
                 }
-                <Box style={{width: "100%"}} minH={20} backgroundColor={"lightgrey"}>
+                <Box style={{width: "100%"}} minH={20} backgroundColor={"lightgrey"} removeClippedSubviews={false}>
                 {
                     translatedContent ? (
                         <Text style={{marginTop:5, marginBottom:10, lineHeight: 25, padding:20}} alignItems="center" fontSize={16}>{
