@@ -183,7 +183,7 @@ const ArticleDetailScreen = (article) => {
 
     return (
         <KeyboardAvoidingView style={{flex: 1}}>
-        <ScrollView width={"100%"}>
+        <ScrollView width={"100%"} removeClippedSubviews={false}>
         <Center width={"100%"} safeArea={5}>
             <Box>
                 <Text fontSize={30}>{heading}</Text>
